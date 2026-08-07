@@ -1,0 +1,44 @@
+# Port / exposure contract — acceptance compares real listeners to this
+listeners:
+  - component: ssh
+    port: 22
+    protocol: tcp
+    bind: 0.0.0.0
+    exposure: public
+    health_probe: null
+    reason: Bootstrap access; prefer Tailscale; may be hardened later
+  - component: hermes-api
+    port: 8642
+    protocol: tcp
+    bind: 127.0.0.1
+    exposure: loopback
+    health_probe: http://127.0.0.1:8642/health
+    reason: Hermes runtime API local only
+  - component: hermes-gateway-metrics
+    port: 8643
+    protocol: tcp
+    bind: 127.0.0.1
+    exposure: loopback
+    health_probe: null
+    reason: Gateway metrics local only
+  - component: postgres
+    port: 5432
+    protocol: tcp
+    bind: 127.0.0.1
+    exposure: container-private
+    health_probe: null
+    reason: Database not public
+  - component: qdrant
+    port: 6333
+    protocol: tcp
+    bind: 127.0.0.1
+    exposure: container-private
+    health_probe: http://127.0.0.1:6333/readyz
+    reason: Vector DB private
+  - component: n8n
+    port: 5678
+    protocol: tcp
+    bind: 127.0.0.1
+    exposure: tailscale
+    health_probe: http://127.0.0.1:5678/healthz
+    reason: n8n via Tailscale only when deployed

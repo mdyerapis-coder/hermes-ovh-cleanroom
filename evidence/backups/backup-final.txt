@@ -1,0 +1,2 @@
+encrypted_backup=/opt/hermes-cleanroom/shared/backups/backup-20260807T085452Z/config-and-state.tgz.enc
+backup_dir=/opt/hermes-cleanroom/shared/backups/backup-20260807T085452Z

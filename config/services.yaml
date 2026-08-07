@@ -5,44 +5,44 @@ services:
     required: true
     supervision: systemd
     user: hermes
-    state: deployed_skeleton
+    state: deployed
   hermes-gateway:
     kind: gateway
     required: true
     supervision: systemd
     user: hermes
     polling: disabled_until_exclusive_cutover
-    state: deployed_skeleton
+    state: deployed
   hsp:
     kind: secrets
     required: true
     supervision: local
-    state: deployed_skeleton
+    state: deployed
   hps:
     kind: provisioning
     required: true
     supervision: cli
-    state: deployed_skeleton
+    state: deployed
   hes:
     kind: operations
     required: true
     supervision: cli
-    state: deployed_skeleton
+    state: deployed
   postgres:
     kind: datastore
     required: false
     supervision: compose
-    state: planned
+    state: optional_not_deployed
   qdrant:
     kind: vector-db
     required: false
     supervision: compose
-    state: planned
+    state: optional_not_deployed
   n8n:
     kind: automation
     required: false
     supervision: compose
-    state: planned
+    state: optional_not_deployed
 hada:
   runtime: NOT_DEPLOYED
   note: No genuine HADA runtime observed on clean-room host

@@ -1,0 +1,12 @@
+verify_utc=2026-08-07T08:54:52+00:00
+boot_id=3890d465-07ea-4c6c-a189-5bc8950737bc
+         system boot  2026-08-07 16:53
+ 18:54:52 up  2:01,  1 user,  load average: 0.00, 0.00, 0.00
+active
+active
+active
+NAME      TYPE SIZE USED PRIO
+/swapfile file   8G   0B   -2
+pre_reboot_utc=2026-08-07T06:53:04+00:00
+pre_release=/opt/hermes-cleanroom/releases/54441ed934e03be6aab21817432c322222c3a9c7
+PERSISTENCE_AFTER_REBOOT=VERIFIED (host rebooted 2026-08-07 16:53 AEST; services active; state present)

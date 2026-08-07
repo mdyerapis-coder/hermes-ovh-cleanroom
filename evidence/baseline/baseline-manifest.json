@@ -1,0 +1,149 @@
+{
+  "completion_git_sha": "15ffd3d6e08f7d6b4cf02a9dd183b498f728c8a1",
+  "completion_timestamp_utc": "2026-08-07T08:55:53.603134+00:00",
+  "accepted_services": [
+    "hermes-agent",
+    "hermes-gateway",
+    "hsp",
+    "hps",
+    "hes",
+    "tailscale",
+    "fail2ban"
+  ],
+  "accepted_commands_interfaces": [
+    "hes status",
+    "hes inventory",
+    "hes health",
+    "hes deploy",
+    "hes recovery",
+    "hes audit",
+    "hes logs",
+    "hes hada",
+    "hsp status",
+    "hps preflight",
+    "hps plan",
+    "hps apply",
+    "hps verify",
+    "scripts/healthcheck.sh",
+    "scripts/deploy.sh",
+    "scripts/rollback.sh",
+    "scripts/backup.sh",
+    "scripts/restore-test.sh",
+    "scripts/acceptance.sh"
+  ],
+  "accepted_hes_hps_hsp_capabilities": {
+    "hes": [
+      "status",
+      "inventory",
+      "health",
+      "deploy",
+      "recovery",
+      "audit",
+      "logs",
+      "hada"
+    ],
+    "hps": [
+      "preflight",
+      "plan",
+      "apply",
+      "verify",
+      "resume"
+    ],
+    "hsp": [
+      "status",
+      "check",
+      "fail_closed"
+    ]
+  },
+  "required_ci_jobs": [
+    "repository-policy",
+    "format-lint",
+    "unit-tests",
+    "config-contract",
+    "secret-scan",
+    "dependency-audit",
+    "sast",
+    "iac-scan",
+    "container-build",
+    "container-vulnerability-scan",
+    "integration-tests",
+    "migration-dry-run",
+    "backup-restore-test",
+    "smoke-tests",
+    "docs-drift",
+    "fault-ledger-validation",
+    "claim-evidence-validation",
+    "baseline-preservation",
+    "AUDIT-GATE"
+  ],
+  "required_tests": [
+    "tests/unit",
+    "tests/integration",
+    "tests/smoke",
+    "tests/acceptance"
+  ],
+  "required_health_checks": [
+    "scripts/healthcheck.sh",
+    "scripts/check-listeners.sh"
+  ],
+  "backup_restore_controls": [
+    "scripts/backup.sh",
+    "scripts/restore-test.sh"
+  ],
+  "recovery_controls": [
+    "scripts/rollback.sh",
+    "scripts/chaos-recovery-test.sh",
+    "scripts/post-reboot-verify.sh"
+  ],
+  "network_exposure_contract": "config/ports.yaml",
+  "secret_contract_names": "config/secret-contract.yaml",
+  "evidence_streams": [
+    "evidence/faults",
+    "evidence/claims",
+    "evidence/deploy",
+    "evidence/acceptance",
+    "evidence/final",
+    "evidence/governance"
+  ],
+  "documentation_set": [
+    "docs/architecture.md",
+    "docs/service-inventory.md",
+    "docs/operations.md",
+    "docs/recovery.md",
+    "docs/secrets-contract.md",
+    "docs/network-contract.md",
+    "docs/backup-restore.md",
+    "docs/autonomous-governance.md",
+    "AGENTS.md",
+    "runbook/RUNBOOK-MANIFEST.md",
+    "policy/anti-hallucination-guardrails.md",
+    "runbook/part-99-post-completion-evolution-policy.md"
+  ],
+  "fault_ledger_location": "evidence/faults/fault-ledger.jsonl",
+  "known_good_deployment_release": "/opt/hermes-cleanroom/releases/15ffd3d6e08f7d6b4cf02a9dd183b498f728c8a1",
+  "protected_files": [
+    ".github/workflows/bootstrap-audit.yml",
+    ".github/workflows/pr-audit.yml",
+    "scripts/ci/audit-gate.py",
+    "scripts/ci/claim-evidence-validate.py",
+    "scripts/ci/fault-ledger-validate.py",
+    "scripts/ci/baseline-preservation.py",
+    "config/services.yaml",
+    "config/ports.yaml",
+    "config/secret-contract.yaml",
+    "policy/anti-hallucination-guardrails.md",
+    "runbook/RUNBOOK-MANIFEST.md",
+    "runbook/part-99-post-completion-evolution-policy.md",
+    "AGENTS.md"
+  ],
+  "critical_governance_file_hashes": {
+    "AGENTS.md": "f87b8cd7b66fa95e6f25e316f63190dfe874733a70f70577d078b8d7d92aca01",
+    "runbook/RUNBOOK-MANIFEST.md": "04dfbd8a00cf6b4a13422cc9c708a091ef0f797456c72255e162c588c4e43486",
+    "policy/anti-hallucination-guardrails.md": "fb9dc79a9993a7cd400a8928fa47649821f42994c63672c8361b2744306ef0f3",
+    "runbook/part-99-post-completion-evolution-policy.md": "07f982ea995b3beac640bb9da6710d4d71f20f2223c6cd7cb6951c1777a4ccfc",
+    ".github/workflows/bootstrap-audit.yml": "cfa8d9b8f7ad58180efb9c1dbb9104f592cf02dacf1146d0f157827a572350fa",
+    ".github/workflows/pr-audit.yml": "8db31db1d79f721e26667c194d896a5203b8b9c4046710d98e6a743145486dbd"
+  },
+  "telegram_state": "READY_FOR_EXCLUSIVE_CUTOVER",
+  "hada_runtime": "NOT_DEPLOYED"
+}

@@ -1,0 +1,18 @@
+{
+  "git_sha": "15ffd3d6e08f7d6b4cf02a9dd183b498f728c8a1",
+  "host": "hermes-ovh-cleanroom",
+  "deployed_path": "/opt/hermes-cleanroom/releases/15ffd3d6e08f7d6b4cf02a9dd183b498f728c8a1",
+  "previous_path": "/opt/hermes-cleanroom/releases/54441ed934e03be6aab21817432c322222c3a9c7",
+  "timestamp_utc": "2026-08-07T08:55:53.574677+00:00",
+  "audit_gates": [
+    "BOOTSTRAP-GATE",
+    "AUDIT-GATE"
+  ],
+  "health": "PASS",
+  "rollback_test": "PASS",
+  "reboot_test": "PASS",
+  "backup_restore": "PASS",
+  "telegram_state": "READY_FOR_EXCLUSIVE_CUTOVER",
+  "hada_runtime": "NOT_DEPLOYED",
+  "known_good": true
+}

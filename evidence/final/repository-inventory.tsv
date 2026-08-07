@@ -1,0 +1,7 @@
+role	owner_repo	default_branch	remote_url	head_sha	release_tag	evidence_source	status
+cleanroom-control	mdyerapis-coder/hermes-ovh-cleanroom	main	https://github.com/mdyerapis-coder/hermes-ovh-cleanroom	dcbedc2ba6fc008a34ed784c467e9e9ffd22bbf3	none	local-git+gh	CURRENT
+hermes-runtime-upstream	mdyerapis-coder/hermes-agent	main	https://github.com/mdyerapis-coder/hermes-agent	PENDING_VERIFICATION	v2026.8.3	shallow-clone+tags	CURRENT
+hps-upstream	mdyerapis-coder/hermes-provisioning-system	main	https://github.com/mdyerapis-coder/hermes-provisioning-system	PENDING_VERIFICATION	none	shallow-clone	CURRENT
+hes-upstream	mdyerapis-coder/hes-cli	main	https://github.com/mdyerapis-coder/hes-cli	PENDING_VERIFICATION	none	shallow-clone	CURRENT
+hada-upstream	mdyerapis-coder/hada	main	https://github.com/mdyerapis-coder/hada	PENDING_VERIFICATION	none	shallow-clone	CURRENT
+config-upstream	mdyerapis-coder/hermes-config	main	https://github.com/mdyerapis-coder/hermes-config	PENDING_VERIFICATION	none	shallow-clone	CURRENT
