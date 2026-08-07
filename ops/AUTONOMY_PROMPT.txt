@@ -11,7 +11,6 @@ Mandatory operating requirements:
 - Establish GitHub PR/CI governance first. Every normal implementation change must use a branch and PR.
 - Maintain the trusted `BOOTSTRAP-GATE`; do not modify or remove `.github/workflows/bootstrap-audit.yml` in an implementation PR.
 - Build the full independent `AUDIT-GATE` required by the runbook and anti-hallucination claim-evidence validation.
-- Enable auto-merge only after exact-success required gates on the exact current PR head SHA.
 - Deploy audited green merges automatically to `hermes-ovh-cleanroom` only.
 - Automatically roll back failed releases and create/continue repair PRs.
 - Never weaken a test, scanner, preservation rule, anti-hallucination rule, or gate merely to obtain green.
@@ -21,6 +20,23 @@ Mandatory operating requirements:
 - Continue unrelated work if an external secret, entitlement, provider quota, or integration is blocked.
 - Run reboot, backup/restore, rollback, persistence and acceptance validation before declaring completion.
 - After baseline completion, implement the baseline-preservation CI floor and permit future additive expansion without removals/regressions.
+
+MANDATORY FIRST GOVERNANCE PR ACTIVATION SEQUENCE:
+The bootstrap deliberately leaves repository auto-merge DISABLED and protects `main` with only the already-proven `BOOTSTRAP-GATE`. This is a temporary bootstrap state designed to prevent the first implementation PR from racing into `main` before the full auditor exists.
+
+For the first governance/CI implementation PR you MUST perform this exact sequence:
+1. Create the complete independent PR audit workflow and final check named exactly `AUDIT-GATE`, including every mandatory job in the runbook and `claim-evidence-validation`.
+2. Open the first implementation PR while repository auto-merge remains disabled.
+3. Wait for `BOOTSTRAP-GATE` and the new `AUDIT-GATE` to complete on the exact current PR head SHA. Do not treat queued, pending, skipped, neutral, stale, missing, cancelled, or an earlier SHA as success.
+4. If either gate is not exact `success`, diagnose, log, repair, commit, push and retest. Do not weaken the auditor.
+5. Only after BOTH gates are exact-success on the exact current PR head SHA, update `main` branch protection so its required status checks include BOTH `BOOTSTRAP-GATE` and `AUDIT-GATE`, with strict/up-to-date checking, zero human approvals, admin enforcement, no force pushes and no deletion.
+6. Read the branch-protection API back and prove both required contexts are actually present. Log/store the evidence.
+7. Only after step 6 succeeds, enable repository auto-merge and verify the repository reports auto-merge enabled.
+8. Then enable squash auto-merge for the first PR (or merge it only through the now-enforced green requirements). Never use `--admin` or an administrator bypass.
+9. From that point onward, normal PRs may use automatic merge, but only while both required gates remain enforced and exact-success green on the current head SHA.
+10. If the GitHub account/plan cannot enforce this protection on the private repository, classify and log the blocker; do NOT compensate by weakening the gate or directly merging implementation changes.
+
+Under no circumstances enable repository auto-merge before the full `AUDIT-GATE` has both passed and been added to required branch protection. `BOOTSTRAP-GATE` alone is never sufficient for an implementation merge.
 
 Bootstrap context already completed before this autonomous run:
 - Ubuntu 24.04.4 clean-room host exists and is named `hermes-ovh-cleanroom`.
