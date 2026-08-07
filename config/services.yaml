@@ -1,0 +1,51 @@
+# Declared clean-room service inventory (intended state)
+services:
+  hermes-agent:
+    kind: runtime
+    required: true
+    supervision: systemd
+    user: hermes
+    state: planned
+  hermes-gateway:
+    kind: gateway
+    required: true
+    supervision: systemd
+    user: hermes
+    polling: disabled_until_exclusive_cutover
+    state: planned
+  hsp:
+    kind: secrets
+    required: true
+    supervision: local
+    state: planned
+  hps:
+    kind: provisioning
+    required: true
+    supervision: cli
+    state: planned
+  hes:
+    kind: operations
+    required: true
+    supervision: cli
+    state: planned
+  postgres:
+    kind: datastore
+    required: false
+    supervision: compose
+    state: planned
+  qdrant:
+    kind: vector-db
+    required: false
+    supervision: compose
+    state: planned
+  n8n:
+    kind: automation
+    required: false
+    supervision: compose
+    state: planned
+hada:
+  runtime: NOT_DEPLOYED
+  note: No genuine HADA runtime observed on clean-room host
+telegram:
+  state: READY_FOR_EXCLUSIVE_CUTOVER
+  note: Do not start production poller without exclusive cutover or test bot

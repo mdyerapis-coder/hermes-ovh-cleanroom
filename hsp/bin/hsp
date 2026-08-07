@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# HSP CLI — names only; never print secret values
+set -Eeuo pipefail
+umask 077
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+SECRETS_DIR="${HSP_SECRETS_DIR:-/opt/hermes-cleanroom/shared/secrets-runtime}"
+CMD="${1:-status}"
+
+case "$CMD" in
+  status|check)
+    python3 - "$ROOT" "$SECRETS_DIR" <<'PY'
+import os, sys, re
+from pathlib import Path
+root = Path(sys.argv[1])
+secrets_dir = Path(sys.argv[2])
+text = (root / "config/secret-contract.yaml").read_text(encoding="utf-8")
+
+# Parse top-level secret entries under secrets:
+lines = text.splitlines()
+entries = []  # (name, required)
+in_secrets = False
+current = None
+required = False
+for line in lines:
+    if re.match(r'^secrets:\s*$', line):
+        in_secrets = True
+        continue
+    if not in_secrets:
+        continue
+    if re.match(r'^[A-Za-z]', line):  # next top-level key
+        if current:
+            entries.append((current, required))
+        break
+    m = re.match(r'^  ([A-Z][A-Z0-9_]+):\s*$', line)
+    if m:
+        if current:
+            entries.append((current, required))
+        current = m.group(1)
+        required = False
+        continue
+    if current and re.match(r'^    required:\s*(true|false)\s*$', line):
+        required = line.strip().split(':',1)[1].strip() == 'true'
+
+if current:
+    entries.append((current, required))
+
+print("HSP_STATUS")
+missing_required = []
+for name, req in entries:
+    present = name in os.environ or (secrets_dir / name).is_file()
+    if present:
+        state = "available"
+    elif req:
+        state = "missing"
+        missing_required.append(name)
+    else:
+        state = "optional-missing"
+    print(f"{name}: {state}")
+if missing_required:
+    print("HSP_FAIL_CLOSED: missing required secrets: " + ",".join(missing_required))
+    sys.exit(2)
+print("HSP_OK")
+PY
+    ;;
+  get)
+    echo "HSP refuses to print secret values" >&2
+    exit 3
+    ;;
+  *)
+    echo "usage: hsp status|check|get" >&2
+    exit 1
+    ;;
+esac

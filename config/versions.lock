@@ -1,0 +1,8 @@
+# Pinned component versions for hermes-ovh-cleanroom
+# Format: component=version  # source
+hermes-agent=v2026.8.3  # upstream tag observed in clone
+postgres=16.4  # pin for future supporting service
+qdrant=v1.12.1
+n8n=1.63.4
+python=3.12
+go=1.22

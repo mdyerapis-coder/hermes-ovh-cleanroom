@@ -1,0 +1,15 @@
+{
+  "fault_id": "FLT-20260807-TRIVY001",
+  "attempt": 1,
+  "timestamp": "2026-08-07T06:45:15.641900+00:00",
+  "hypothesis": "Trivy 0.58.1 asset no longer published; pin current release v0.73.0 Linux-64bit",
+  "change_summary": "Update pr-audit.yml trivy install to v0.73.0 with verified asset name",
+  "files_changed": [
+    ".github/workflows/pr-audit.yml"
+  ],
+  "commit_sha": null,
+  "ci_run": "31154880972",
+  "verification": "re-run PR CI container-vulnerability-scan and AUDIT-GATE",
+  "result": "pending",
+  "next_action": "push repair and wait for exact success"
+}
