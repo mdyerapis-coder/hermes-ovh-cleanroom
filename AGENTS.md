@@ -17,5 +17,9 @@ These instructions are authoritative for every Grok session in this repository.
 13. The exact current PR head SHA must be the SHA that passed its required gates.
 14. Continue independent work when one integration is externally blocked. Classify the blocker precisely.
 15. Create `evidence/control/AUTONOMY_DONE.json` only under the completion rules in `runbook/RUNBOOK-MANIFEST.md`.
+16. Bootstrap auto-merge MUST remain disabled during the first governance/CI PR. `BOOTSTRAP-GATE` by itself is never sufficient to merge implementation work.
+17. On the first governance PR, build the full `AUDIT-GATE`, let BOTH `BOOTSTRAP-GATE` and `AUDIT-GATE` reach exact `success` on the exact current head SHA, then update `main` protection to require BOTH gates and read the protection back to prove both are enforced. Only after that proof may repository auto-merge be enabled and used.
+18. Never use `--admin`, administrator bypass, direct push to protected `main`, or temporary removal of a required check to activate the first `AUDIT-GATE`.
+19. If the GitHub plan/account cannot enforce required protection for this private repository, record the external governance blocker and stop implementation merges rather than weakening the design.
 
 The GitHub repository is the control plane and audit record. The target mutation host is `hermes-ovh-cleanroom` only unless an authoritative runbook step explicitly uses another system read-only.
