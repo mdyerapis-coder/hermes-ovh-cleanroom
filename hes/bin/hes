@@ -1,24 +1,78 @@
 #!/usr/bin/env bash
+# HES CLI — Hermes Operator Interface v1
+# Operator surface only; all infrastructure mutations delegate to HPS.
 set -Eeuo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+export HERMES_REPO="${HERMES_REPO:-$ROOT}"
+HPS="$ROOT/hps/bin/hps"
 CMD="${1:-status}"
+shift || true
+
+# Environment / target context — never hidden
+HES_ENVIRONMENT="${HES_ENVIRONMENT:-${HPS_ENVIRONMENT:-cleanroom}}"
+HES_TARGET_HOST="${HES_TARGET_HOST:-${HPS_TARGET_HOST:-hermes-ovh-cleanroom}}"
+
+# Progressive enhancement: dark/blue terminal when capable; plain text always usable
+USE_COLOR=0
+if [[ -t 1 && "${HES_COLOR:-auto}" != "never" && "${NO_COLOR:-}" == "" ]]; then
+  if [[ "${TERM:-}" != "dumb" ]]; then
+    USE_COLOR=1
+  fi
+fi
+if [[ "${HES_COLOR:-}" == "always" ]]; then
+  USE_COLOR=1
+fi
+
+if [[ "$USE_COLOR" -eq 1 ]]; then
+  C_RESET=$'\033[0m'
+  C_BOLD=$'\033[1m'
+  C_BLUE=$'\033[38;5;39m'
+  C_DIM=$'\033[2m'
+  C_BG=$'\033[40m'
+else
+  C_RESET=""; C_BOLD=""; C_BLUE=""; C_DIM=""; C_BG=""
+fi
 
 banner() {
-  cat <<'BANNER'
+  local title="${1:-HES}"
+  if [[ "$USE_COLOR" -eq 1 ]]; then
+    printf '%s' "$C_BG$C_BLUE$C_BOLD"
+  fi
+  cat <<BANNER
 ========================================
    HERMES OVH CLEANROOM
+   HERMES OPERATOR SHELL (HES v1)
    host identity must never be ambiguous
+  title: ${title}
+  environment: ${HES_ENVIRONMENT}
+  target_host: ${HES_TARGET_HOST}
+  local_hostname: $(hostname)
+  utc: $(date -u --iso-8601=seconds)
+  git: $(git -C "$ROOT" rev-parse --short HEAD 2>/dev/null || echo unknown)
 ========================================
 BANNER
+  if [[ "$USE_COLOR" -eq 1 ]]; then
+    printf '%s' "$C_RESET"
+  fi
+}
+
+delegate_hps() {
+  # shellcheck disable=SC2086
+  HPS_ENVIRONMENT="$HES_ENVIRONMENT" HPS_TARGET_HOST="$HES_TARGET_HOST" \
+    bash "$HPS" "$@"
+}
+
+require_hps() {
+  if [[ ! -x "$HPS" ]]; then
+    echo "HES_ERROR: HPS binary missing at $HPS" >&2
+    exit 70
+  fi
 }
 
 case "$CMD" in
   status)
-    banner
-    echo "hostname: $(hostname)"
-    echo "utc: $(date -u --iso-8601=seconds)"
+    banner "status"
     echo "version: $(cat "$ROOT/VERSION" 2>/dev/null || echo unknown)"
-    echo "git: $(git -C "$ROOT" rev-parse --short HEAD 2>/dev/null || echo unknown)"
     echo "HADA_RUNTIME=NOT_DEPLOYED"
     echo "TELEGRAM_STATE=READY_FOR_EXCLUSIVE_CUTOVER"
     if [[ -L /opt/hermes-cleanroom/current ]]; then
@@ -26,48 +80,283 @@ case "$CMD" in
     else
       echo "release_current: NOT_DEPLOYED"
     fi
+    if [[ -L /opt/hermes-cleanroom/previous ]]; then
+      echo "release_previous: $(readlink -f /opt/hermes-cleanroom/previous)"
+    else
+      echo "release_previous: none"
+    fi
+    echo "mutation_authority: HPS"
+    require_hps
+    echo "--- hps protect ---"
+    delegate_hps protect -e "$HES_ENVIRONMENT" --host "$HES_TARGET_HOST" 2>/dev/null || true
+    echo "--- hps cutover status ---"
+    delegate_hps cutover status 2>/dev/null || true
     ;;
+
+  health|/health)
+    banner "health"
+    bash "$ROOT/scripts/healthcheck.sh"
+    ;;
+
+  hosts|/hosts)
+    banner "hosts"
+    require_hps
+    delegate_hps inventory
+    ;;
+
+  host|/host)
+    banner "host"
+    require_hps
+    HOST_ID="${1:-$HES_TARGET_HOST}"
+    delegate_hps target -e "$HES_ENVIRONMENT" --host "$HOST_ID"
+    ;;
+
+  services|/services)
+    banner "services"
+    echo "## config/services.yaml"
+    cat "$ROOT/config/services.yaml"
+    echo
+    echo "## systemd unit states (local)"
+    for u in hermes-agent hermes-gateway hermes-healthcheck hermes-platform-controller; do
+      st="$(systemctl is-active "$u" 2>/dev/null || echo unknown)"
+      en="$(systemctl is-enabled "$u" 2>/dev/null || echo unknown)"
+      echo "$u: active=$st enabled=$en"
+    done
+    ;;
+
+  service|/service)
+    banner "service"
+    SVC="${1:-}"
+    if [[ -z "$SVC" ]]; then
+      echo "usage: hes service <name>" >&2
+      exit 2
+    fi
+    systemctl status "$SVC" --no-pager -l 2>/dev/null || echo "unit_not_found_or_inaccessible=$SVC"
+    ;;
+
+  releases|/releases)
+    banner "releases"
+    require_hps
+    delegate_hps releases
+    ;;
+
+  deploy|/deploy)
+    banner "deploy"
+    SUB="${1:-status}"
+    require_hps
+    case "$SUB" in
+      status)
+        delegate_hps releases
+        ls -la /opt/hermes-cleanroom 2>/dev/null || echo "release root absent"
+        ;;
+      plan)
+        delegate_hps plan -e "$HES_ENVIRONMENT" --host "$HES_TARGET_HOST"
+        ;;
+      apply)
+        echo "HES delegates deploy apply to HPS (mutation authority)"
+        shift || true
+        delegate_hps apply -e "$HES_ENVIRONMENT" --host "$HES_TARGET_HOST" "$@"
+        ;;
+      *)
+        echo "usage: hes deploy [status|plan|apply]" >&2
+        exit 2
+        ;;
+    esac
+    ;;
+
+  rollback|/rollback)
+    banner "rollback"
+    require_hps
+    echo "HES delegates rollback to HPS"
+    delegate_hps rollback -e "$HES_ENVIRONMENT" --host "$HES_TARGET_HOST"
+    ;;
+
+  backup|/backup)
+    banner "backup"
+    require_hps
+    delegate_hps backup
+    ;;
+
+  restore|/restore)
+    banner "restore"
+    require_hps
+    SUB="${1:-test}"
+    if [[ "$SUB" == "test" || "$SUB" == "restore-test" ]]; then
+      delegate_hps restore-test
+    else
+      delegate_hps restore -e "$HES_ENVIRONMENT" --host "$HES_TARGET_HOST"
+    fi
+    ;;
+
+  drift|/drift)
+    banner "drift"
+    require_hps
+    delegate_hps drift -e "$HES_ENVIRONMENT" --host "$HES_TARGET_HOST"
+    ;;
+
+  faults|/faults)
+    banner "faults"
+    if [[ -f "$ROOT/evidence/faults/current-summary.md" ]]; then
+      cat "$ROOT/evidence/faults/current-summary.md"
+    fi
+    echo "## fault ledger tail"
+    if [[ -f "$ROOT/evidence/faults/fault-ledger.jsonl" ]]; then
+      tail -n 20 "$ROOT/evidence/faults/fault-ledger.jsonl"
+    else
+      echo "no fault ledger"
+    fi
+    ;;
+
+  repairs|/repairs)
+    banner "repairs"
+    echo "## repair attempts"
+    ls -la "$ROOT/evidence/faults/repair-attempts" 2>/dev/null || echo "none"
+    ls -la "$ROOT/evidence/repairs" 2>/dev/null || true
+    echo "## repair-status open faults (ledger scan)"
+    if [[ -f "$ROOT/evidence/faults/fault-ledger.jsonl" ]]; then
+      python3 - <<'PY'
+import json
+from pathlib import Path
+p = Path("evidence/faults/fault-ledger.jsonl")
+open_count = 0
+for line in p.read_text(encoding="utf-8").splitlines():
+    if not line.strip():
+        continue
+    try:
+        rec = json.loads(line)
+    except json.JSONDecodeError:
+        continue
+    if rec.get("repair_status") not in (None, "resolved", "wontfix"):
+        open_count += 1
+        print(f"{rec.get('fault_id')}: {rec.get('repair_status')} — {rec.get('symptom','')[:120]}")
+print(f"open_or_untriaged_approx={open_count}")
+PY
+    fi
+    ;;
+
+  audit|/audit)
+    banner "audit"
+    echo "## fault summary"
+    cat "$ROOT/evidence/faults/current-summary.md" 2>/dev/null || echo "no summary yet"
+    echo "## claims count"
+    wc -l "$ROOT/evidence/claims/claim-evidence-map.jsonl" 2>/dev/null || true
+    echo "## baseline"
+    test -f "$ROOT/evidence/baseline/baseline-manifest.json" && echo "baseline_manifest=present" || echo "baseline_manifest=absent"
+    echo "## autonomy / platform markers"
+    test -f "$ROOT/evidence/control/AUTONOMY_DONE.json" && echo "AUTONOMY_DONE=present" || echo "AUTONOMY_DONE=absent"
+    test -f "$ROOT/evidence/control/PLATFORM_COMPLETION.json" && echo "PLATFORM_COMPLETION=present" || echo "PLATFORM_COMPLETION=absent"
+    ;;
+
+  github|/github)
+    banner "github"
+    if command -v gh >/dev/null; then
+      echo "## repo"
+      gh repo view --json nameWithOwner,defaultBranchRef --jq '{repo:.nameWithOwner,default:.defaultBranchRef.name}' 2>/dev/null || true
+      echo "## main protection contexts"
+      gh api repos/:owner/:repo/branches/main/protection/required_status_checks --jq '{strict:.strict,contexts:.contexts}' 2>/dev/null || echo "protection_read_failed_or_unavailable"
+      echo "## open PRs"
+      gh pr list --state open --limit 10 2>/dev/null || true
+      echo "## recent main commits"
+      gh api repos/:owner/:repo/commits?sha=main\&per_page=5 --jq '.[]|{sha:.sha[0:7],msg:.commit.message|split("\n")[0]}' 2>/dev/null || true
+    else
+      echo "gh_cli=NOT_AVAILABLE"
+    fi
+    ;;
+
+  secrets|/secrets)
+    banner "secrets"
+    echo "HES shows HSP presence only; values never displayed"
+    bash "$ROOT/hsp/bin/hsp" status || true
+    require_hps
+    delegate_hps secrets-refs
+    ;;
+
+  cutover|/cutover)
+    banner "cutover"
+    require_hps
+    SUB="${1:-status}"
+    shift || true
+    case "$SUB" in
+      status) delegate_hps cutover status ;;
+      transition) delegate_hps cutover transition "$@" ;;
+      arm) delegate_hps cutover arm "$@" ;;
+      disarm) delegate_hps cutover disarm "$@" ;;
+      *)
+        echo "usage: hes cutover [status|transition|arm|disarm]" >&2
+        exit 2
+        ;;
+    esac
+    ;;
+
+  hada|/hada)
+    banner "hada"
+    echo "HADA_RUNTIME=NOT_DEPLOYED"
+    echo "Merge authority: GitHub PR + CI AUDIT-GATE"
+    echo "No genuine HADA runtime observed unless evidence proves otherwise."
+    ;;
+
   inventory)
-    banner
+    # baseline preserved alias
+    banner "inventory"
     echo "## services.yaml"
     cat "$ROOT/config/services.yaml"
     ;;
-  health)
-    banner
-    bash "$ROOT/scripts/healthcheck.sh"
-    ;;
-  deploy)
-    banner
-    echo "subcommand: ${2:-status}"
-    if [[ "${2:-status}" == "status" ]]; then
-      ls -la /opt/hermes-cleanroom 2>/dev/null || echo "release root absent"
-      ls -la "$ROOT/evidence/deploy" 2>/dev/null || true
-    fi
-    ;;
+
   recovery)
-    banner
+    # baseline preserved
+    banner "recovery"
     echo "previous: $(readlink -f /opt/hermes-cleanroom/previous 2>/dev/null || echo none)"
     echo "current: $(readlink -f /opt/hermes-cleanroom/current 2>/dev/null || echo none)"
     ls "$ROOT/evidence/backups" 2>/dev/null | tail -20 || true
+    require_hps
+    delegate_hps releases
     ;;
-  audit)
-    banner
-    echo "## fault summary"
-    cat "$ROOT/evidence/faults/current-summary.md" 2>/dev/null || echo "no summary yet"
-    echo "## claims"
-    wc -l "$ROOT/evidence/claims/claim-evidence-map.jsonl" 2>/dev/null || true
-    ;;
+
   logs)
-    banner
+    banner "logs"
     journalctl -u hermes* --no-pager -n 50 2>/dev/null || echo "no hermes units yet"
     ;;
-  hada)
-    banner
-    echo "HADA_RUNTIME=NOT_DEPLOYED"
-    echo "Merge authority: GitHub PR + CI AUDIT-GATE"
+
+  help|/help|-h|--help)
+    banner "help"
+    cat <<'EOF'
+HES v1 commands (slash and bare forms accepted for several):
+  status          Overall operator status + HPS protect/cutover
+  health          Run healthcheck
+  hosts           HPS inventory
+  host [id]       Resolve single host target
+  services        Service inventory + unit states
+  service <name>  systemctl status for one unit
+  releases        Release list / current / previous via HPS
+  deploy          status|plan|apply (apply -> HPS)
+  rollback        Delegate rollback to HPS
+  backup          Delegate backup to HPS
+  restore         test (default) via HPS restore-test
+  drift           Drift detection via HPS
+  faults          Fault ledger view
+  repairs         Repair attempts view
+  audit           Local audit/evidence summary
+  github          GitHub protection / PR / commits
+  secrets         HSP presence + HPS secret refs
+  cutover         status|transition|arm|disarm via HPS
+  hada            Always truthful HADA_RUNTIME
+  inventory       Baseline inventory view
+  recovery        Baseline recovery view
+  logs            Recent journal
+  help            This help
+
+Environment context:
+  HES_ENVIRONMENT / HPS_ENVIRONMENT (default: cleanroom)
+  HES_TARGET_HOST / HPS_TARGET_HOST (default: hermes-ovh-cleanroom)
+  HES_COLOR=auto|always|never
+
+All infrastructure mutations are performed by HPS only.
+EOF
     ;;
+
   *)
-    echo "usage: hes status|inventory|health|deploy|recovery|audit|logs|hada"
+    echo "unknown command: $CMD" >&2
+    echo "usage: hes status|health|hosts|host|services|service|releases|deploy|rollback|backup|restore|drift|faults|repairs|audit|github|secrets|cutover|hada|help" >&2
     exit 1
     ;;
 esac

@@ -1,68 +1,42 @@
 #!/usr/bin/env bash
+# HPS CLI — Hermes Provisioning System v1
+# Sole infrastructure/runtime mutation authority.
 set -Eeuo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-CMD="${1:-help}"
-EVIDENCE_DIR="$ROOT/evidence/deploy/hps"
-mkdir -p "$EVIDENCE_DIR"
-RUN_ID="${HPS_RUN_ID:-$(date -u +%Y%m%dT%H%M%SZ)}"
-SHA="$(git -C "$ROOT" rev-parse HEAD 2>/dev/null || echo unknown)"
+export HERMES_REPO="${HERMES_REPO:-$ROOT}"
 
-log() { echo "[hps $RUN_ID] $*"; echo "$(date -u --iso-8601=seconds) $*" >>"$EVIDENCE_DIR/$RUN_ID.log"; }
+# Prefer system state dir; core falls back if unwritable
+export HPS_STATE_DIR="${HPS_STATE_DIR:-/var/lib/hermes-hps}"
 
-assert_cleanroom() {
-  local host
-  host="$(hostname)"
-  if [[ "$host" != "hermes-ovh-cleanroom" ]]; then
-    # allow CI runners for plan/check only
-    if [[ "${HPS_ALLOW_NON_CLEANROOM:-}" != "1" && "$CMD" == "apply" ]]; then
-      echo "HPS apply blocked: host=$host is not hermes-ovh-cleanroom" >&2
-      exit 70
-    fi
-  fi
-}
+if [[ "${1:-}" == "help" || "${1:-}" == "-h" || "${1:-}" == "--help" || $# -eq 0 ]]; then
+  cat <<'EOF'
+usage: hps <command> [args]
 
-case "$CMD" in
-  preflight)
-    assert_cleanroom
-    bash "$ROOT/scripts/preflight.sh" "$EVIDENCE_DIR/preflight-$RUN_ID.txt"
-    log "preflight ok"
-    ;;
-  plan)
-    log "plan sha=$SHA"
-    python3 "$ROOT/scripts/ci/validate-config.py"
-    cat >"$EVIDENCE_DIR/plan-$RUN_ID.json" <<JSON
-{"run_id":"$RUN_ID","sha":"$SHA","phases":["accounts","dirs","contracts","scripts","health"],"mode":"plan"}
-JSON
-    log "plan written"
-    ;;
-  apply)
-    assert_cleanroom
-    log "apply start sha=$SHA"
-    # Idempotent local dirs
-    if [[ "$(hostname)" == "hermes-ovh-cleanroom" ]]; then
-      sudo mkdir -p /opt/hermes-cleanroom/{releases,shared/{data,models,backups,logs,secrets-runtime}}
-      if ! id hermes >/dev/null 2>&1; then
-        sudo useradd --system --create-home --home-dir /home/hermes --shell /usr/sbin/nologin hermes || true
-      fi
-      if ! id deploy >/dev/null 2>&1; then
-        sudo useradd --system --create-home --home-dir /home/deploy --shell /bin/bash deploy || true
-      fi
-    fi
-    if [[ -x "$ROOT/scripts/host-bootstrap.sh" ]]; then
-      bash "$ROOT/scripts/host-bootstrap.sh" || log "host-bootstrap soft-fail"
-    fi
-    bash "$ROOT/scripts/deploy.sh" "$SHA"
-    log "apply complete"
-    ;;
-  verify)
-    bash "$ROOT/scripts/healthcheck.sh"
-    log "verify ok"
-    ;;
-  resume)
-    log "resume not required; re-run apply (idempotent)"
-    "$0" apply
-    ;;
-  help|*)
-    echo "usage: hps preflight|plan|apply|verify|resume"
-    ;;
-esac
+commands:
+  inventory              Authoritative host inventory + local identity
+  target [-e ENV] [--host ID]
+  preflight [-e ENV] [--host ID]
+  plan [-e ENV] [--host ID]
+  apply [-e ENV] [--host ID] [--plan-id ID] [--plan-digest DIGEST]
+  verify [-e ENV] [--host ID]
+  resume [-e ENV] [--host ID]
+  rollback [-e ENV] [--host ID]
+  backup
+  restore-test
+  restore [-e ENV] [--host ID]
+  releases
+  drift [-e ENV] [--host ID]
+  secrets-refs
+  protect [-e ENV] [--host ID]
+  reboot-persistence
+  cutover status|transition|arm|disarm
+
+environments: cleanroom | production | rollback | test
+
+Production mutation requires valid local arm state and cutover ARMED+.
+EOF
+  exit 0
+fi
+
+# Baseline aliases preserved: preflight|plan|apply|verify|resume
+exec python3 "$ROOT/hps/lib/hps_core.py" "$@"
