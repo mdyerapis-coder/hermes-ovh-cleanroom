@@ -47,6 +47,8 @@ jobs:
             ops/AUTONOMY_PROMPT.txt
             ops/grok-controller.sh
             ops/install-grok-controller.sh
+            ops/bootstrap-github-governance.sh
+            ops/launch-autonomy.sh
             systemd/hermes-grok-controller.service
             .github/workflows/bootstrap-audit.yml
           )
@@ -71,6 +73,9 @@ jobs:
           grep -q 'runbook/RUNBOOK-MANIFEST.md' AGENTS.md
           grep -q -- '--always-approve' ops/grok-controller.sh
           grep -q -- '--no-auto-update' ops/grok-controller.sh
+          grep -q 'BOOTSTRAP-GATE' ops/bootstrap-github-governance.sh
+          grep -q 'GITHUB_GOVERNANCE_BOOTSTRAP=PASS' ops/bootstrap-github-governance.sh
+          grep -q 'AUTONOMY_LAUNCH=PASS' ops/launch-autonomy.sh
 
           deleted="$(git diff --name-status "$BASE_SHA" "$HEAD_SHA" -- \
             AGENTS.md \
@@ -86,6 +91,8 @@ jobs:
             ops/AUTONOMY_PROMPT.txt \
             ops/grok-controller.sh \
             ops/install-grok-controller.sh \
+            ops/bootstrap-github-governance.sh \
+            ops/launch-autonomy.sh \
             systemd/hermes-grok-controller.service \
             | awk '$1 ~ /^(D|R)/ {print}')"
 
