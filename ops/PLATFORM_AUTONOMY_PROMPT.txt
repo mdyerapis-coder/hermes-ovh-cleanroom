@@ -1,0 +1,52 @@
+Continue autonomous implementation from the verified clean-room baseline into the HPS/HES platform-completion phase.
+
+MANDATORY FIRST ACTIONS
+1. Read AGENTS.md.
+2. Read runbook/RUNBOOK-MANIFEST.md and every authoritative file in its current order, including runbook/part-100-hps-hes-platform-completion.md.
+3. Read policy/anti-hallucination-guardrails.md and runbook/part-99-post-completion-evolution-policy.md.
+4. Inspect the current protected main SHA, evidence/control/AUTONOMY_DONE.json, evidence/baseline/baseline-manifest.json, GitHub branch protection, required BOOTSTRAP-GATE/AUDIT-GATE status, deployed/current release, runtime health, open PRs, faults and external blockers.
+5. Treat the existing AUTONOMY_DONE marker as the preserved clean-room baseline. It is NOT the stop condition for this phase.
+6. The stop marker for this phase is evidence/control/PLATFORM_COMPLETION.json.
+
+MISSION
+Execute runbook/part-100-hps-hes-platform-completion.md to the strongest truthful completion state permitted by evidence.
+
+Mandatory execution order:
+HPS v1 -> HES v1 -> HPS/HES/HSP/GitHub integration -> HPS-native Hermes cutover workflow -> resolve available blockers -> exclusive production cutover only if genuinely ready and locally armed -> live E2E -> soak/baseline -> final evidence -> HADA phase when appropriate.
+
+OPERATING RULES
+- Execute; do not merely report, plan, narrate or hand routine work back to the operator.
+- All normal code/config/docs changes use feature branches and pull requests against protected main.
+- Never bypass, weaken, rename or remove BOOTSTRAP-GATE, AUDIT-GATE, strict protection, baseline preservation, secret scanning or other mandatory jobs.
+- Require exact success on the exact current PR head before merge. Use the repository's normal protected merge/auto-merge path only.
+- After a successful merge, update the OVH checkout with fast-forward-only main and deploy/verify the merged protected-main SHA using the repository's existing deployment and acceptance mechanisms. Do not treat the GitHub deploy-intent workflow as proof of host deployment.
+- Preserve all proven baseline files, evidence, recovery paths and controller fixes.
+- HPS is the only infrastructure/runtime mutation authority. HES delegates mutations to HPS.
+- HSP remains the secrets plane. Never print, commit, persist in evidence, or expose real secret values.
+- Existing production Hermes is READ ONLY until an HPS cutover transaction has CUTOVER_READY evidence and a valid explicit local arm state.
+- Never run two production Telegram pollers. Prove old-poller fencing before allowing the new production poller to start; prove new-poller death before rollback re-enables the old poller.
+- HADA must remain HADA_RUNTIME=NOT_DEPLOYED unless genuine runtime evidence exists.
+- Unknown facts are PENDING_VERIFICATION.
+- Log every observed fault and every repair attempt append-only. Preserve failed repair attempts.
+- Maximum 12 autonomous repair attempts per distinct fault; then record BLOCKED_AUTONOMOUS_REPAIR_LIMIT and continue independent work.
+- Continue independent work when an external permission, credential, ACL, billing or arm prerequisite blocks one workstream.
+- Do not claim live provider or Telegram E2E without a real permitted test.
+- Do not create evidence/control/PLATFORM_COMPLETION.json early.
+
+HPS V1 MINIMUM
+Implement and prove host inventory, explicit target resolution, deterministic plan, plan digest/state validation, apply, verify, rollback, backup, restore-test, restore, release management, drift detection, HSP secret references, production protection, fault/evidence integration and reboot persistence. Produce evidence/hps/HPS_V1.json and .md only when evidence-backed.
+
+HES V1 MINIMUM
+Implement and prove operator commands/views for status, health, hosts, services, releases, deploy, rollback, backup, restore, drift, faults, repairs, audit/GitHub, secrets presence, cutover, hada and help. Environment/target context must be unambiguous. Preserve plain-text usability and add dark/blue terminal presentation only as a progressive enhancement. Produce evidence/hes/HES_V1.json and .md only when evidence-backed.
+
+CUTOVER
+Implement the cutover state machine and tests before production mutation. Production discovery must remain read-only until ARMED. If production SSH/Tailscale access, required provider/Telegram credentials or the explicit local arm state are unavailable, complete all independent HPS/HES/cutover software work, record exact blockers and stop only with a truthful non-production disposition.
+
+COMPLETION
+Preferred final state is COMPLETE_PRODUCTION with evidence-backed HPS_V1=PASS, HES_V1=PASS, HPS_HES_INTEGRATION=PASS, OVH production ownership, Telegram exclusivity, live Telegram E2E, rollback availability and production baseline.
+
+If software/platform completion is proven but external prerequisites prevent safe cutover, permitted truthful states are COMPLETE_HPS_HES_READY_FOR_CUTOVER or PARTIAL_WITH_EXTERNAL_BLOCKERS. FAILED_SAFETY_GATE is permitted only for a genuine unresolved safety failure.
+
+A valid evidence/control/PLATFORM_COMPLETION.json must include state, evidence_verified=true, verified_commit_sha, final_report and evidence references supporting the disposition. Before writing it, reconcile the canonical fault ledger, claim-evidence map, baseline preservation, GitHub gate evidence, host deployment evidence and outstanding blockers.
+
+Keep working and repairing until one of those evidence-backed terminal states is genuinely reached.
