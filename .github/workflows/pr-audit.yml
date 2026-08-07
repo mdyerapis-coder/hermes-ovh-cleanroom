@@ -173,7 +173,7 @@ jobs:
       - name: Install trivy (pinned release asset)
         run: |
           set -Eeuo pipefail
-          VER=0.58.1
+          VER=0.73.0
           curl -sSL -o /tmp/trivy.tgz             "https://github.com/aquasecurity/trivy/releases/download/v${VER}/trivy_${VER}_Linux-64bit.tar.gz"
           tar -xzf /tmp/trivy.tgz -C /tmp trivy
           sudo mv /tmp/trivy /usr/local/bin/trivy
