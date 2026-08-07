@@ -1,0 +1,11 @@
+========================================
+   HERMES OVH CLEANROOM
+   host identity must never be ambiguous
+========================================
+hostname: hermes-ovh-cleanroom
+utc: 2026-08-07T06:52:52+00:00
+version: 0.1.0-cleanroom
+git: 54441ed
+HADA_RUNTIME=NOT_DEPLOYED
+TELEGRAM_STATE=READY_FOR_EXCLUSIVE_CUTOVER
+release_current: /opt/hermes-cleanroom/releases/54441ed934e03be6aab21817432c322222c3a9c7
