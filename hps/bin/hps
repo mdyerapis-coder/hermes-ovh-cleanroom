@@ -48,6 +48,9 @@ JSON
         sudo useradd --system --create-home --home-dir /home/deploy --shell /bin/bash deploy || true
       fi
     fi
+    if [[ -x "$ROOT/scripts/host-bootstrap.sh" ]]; then
+      bash "$ROOT/scripts/host-bootstrap.sh" || log "host-bootstrap soft-fail"
+    fi
     bash "$ROOT/scripts/deploy.sh" "$SHA"
     log "apply complete"
     ;;

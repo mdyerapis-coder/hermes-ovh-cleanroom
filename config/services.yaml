@@ -5,29 +5,29 @@ services:
     required: true
     supervision: systemd
     user: hermes
-    state: planned
+    state: deployed_skeleton
   hermes-gateway:
     kind: gateway
     required: true
     supervision: systemd
     user: hermes
     polling: disabled_until_exclusive_cutover
-    state: planned
+    state: deployed_skeleton
   hsp:
     kind: secrets
     required: true
     supervision: local
-    state: planned
+    state: deployed_skeleton
   hps:
     kind: provisioning
     required: true
     supervision: cli
-    state: planned
+    state: deployed_skeleton
   hes:
     kind: operations
     required: true
     supervision: cli
-    state: planned
+    state: deployed_skeleton
   postgres:
     kind: datastore
     required: false

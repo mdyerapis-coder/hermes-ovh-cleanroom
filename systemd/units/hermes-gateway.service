@@ -1,0 +1,21 @@
+[Unit]
+Description=Hermes Gateway (clean-room, polling disabled)
+After=network-online.target
+ConditionPathExists=/opt/hermes-cleanroom/shared/venvs/hermes/bin/python
+
+[Service]
+Type=simple
+User=hermes
+Group=hermes
+Environment=HERMES_TELEGRAM_POLLING=0
+Environment=HERMES_GATEWAY_POLLING=0
+Environment=HERMES_ENV=cleanroom
+# Do not start production Telegram poller
+ExecStart=/bin/bash -c 'echo "gateway installed; polling disabled (READY_FOR_EXCLUSIVE_CUTOVER)"; exec sleep infinity'
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

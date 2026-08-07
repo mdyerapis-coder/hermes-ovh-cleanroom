@@ -41,7 +41,8 @@ for line in lines:
     if current and re.match(r'^    required:\s*(true|false)\s*$', line):
         required = line.strip().split(':',1)[1].strip() == 'true'
 
-if current:
+# current already appended on section exit; only append if loop ended mid-entry
+if current and not any(e[0] == current for e in entries):
     entries.append((current, required))
 
 print("HSP_STATUS")
