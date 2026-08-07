@@ -1,0 +1,14 @@
+# Production overlay for clean-room host only
+name: hermes-cleanroom
+# Extends base with resource limits; still loopback-only
+services:
+  postgres:
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+  qdrant:
+    deploy:
+      resources:
+        limits:
+          memory: 2G

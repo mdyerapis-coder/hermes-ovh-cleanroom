@@ -1,0 +1,13 @@
+[Unit]
+Description=Hermes clean-room healthcheck oneshot
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+WorkingDirectory=/opt/hermes-cleanroom/current
+ExecStart=/opt/hermes-cleanroom/current/scripts/healthcheck.sh
+Nice=10
+
+[Install]
+WantedBy=multi-user.target

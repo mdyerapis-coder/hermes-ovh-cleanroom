@@ -1,0 +1,46 @@
+name: Deploy Clean-room
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hermes-ovh-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: deploy-cleanroom
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+      - name: Record deploy intent
+        run: |
+          set -Eeuo pipefail
+          mkdir -p evidence/deploy
+          cat > evidence/deploy/ci-deploy-intent.json <<JSON
+          {
+            "sha": "${{ github.sha }}",
+            "ref": "${{ github.ref }}",
+            "timestamp_utc": "$(date -u --iso-8601=seconds)",
+            "target": "hermes-ovh-cleanroom",
+            "mode": "self-hosted-or-manual-followup"
+          }
+          JSON
+          echo "Deploy workflow recorded intent for ${{ github.sha }}"
+          echo "Self-hosted Tailscale deploy path activates when runner/OIDC is configured."
+          echo "On the clean-room host, autonomous controller applies: scripts/deploy.sh ${{ github.sha }}"
+      - name: Validate release artifacts present
+        run: |
+          test -f scripts/deploy.sh
+          test -f scripts/rollback.sh
+          test -f scripts/healthcheck.sh
+          test -f scripts/acceptance.sh
+          python3 scripts/ci/validate-config.py

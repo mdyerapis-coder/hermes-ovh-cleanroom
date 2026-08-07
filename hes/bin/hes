@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+CMD="${1:-status}"
+
+banner() {
+  cat <<'BANNER'
+========================================
+   HERMES OVH CLEANROOM
+   host identity must never be ambiguous
+========================================
+BANNER
+}
+
+case "$CMD" in
+  status)
+    banner
+    echo "hostname: $(hostname)"
+    echo "utc: $(date -u --iso-8601=seconds)"
+    echo "version: $(cat "$ROOT/VERSION" 2>/dev/null || echo unknown)"
+    echo "git: $(git -C "$ROOT" rev-parse --short HEAD 2>/dev/null || echo unknown)"
+    echo "HADA_RUNTIME=NOT_DEPLOYED"
+    echo "TELEGRAM_STATE=READY_FOR_EXCLUSIVE_CUTOVER"
+    if [[ -L /opt/hermes-cleanroom/current ]]; then
+      echo "release_current: $(readlink -f /opt/hermes-cleanroom/current)"
+    else
+      echo "release_current: NOT_DEPLOYED"
+    fi
+    ;;
+  inventory)
+    banner
+    echo "## services.yaml"
+    cat "$ROOT/config/services.yaml"
+    ;;
+  health)
+    banner
+    bash "$ROOT/scripts/healthcheck.sh"
+    ;;
+  deploy)
+    banner
+    echo "subcommand: ${2:-status}"
+    if [[ "${2:-status}" == "status" ]]; then
+      ls -la /opt/hermes-cleanroom 2>/dev/null || echo "release root absent"
+      ls -la "$ROOT/evidence/deploy" 2>/dev/null || true
+    fi
+    ;;
+  recovery)
+    banner
+    echo "previous: $(readlink -f /opt/hermes-cleanroom/previous 2>/dev/null || echo none)"
+    echo "current: $(readlink -f /opt/hermes-cleanroom/current 2>/dev/null || echo none)"
+    ls "$ROOT/evidence/backups" 2>/dev/null | tail -20 || true
+    ;;
+  audit)
+    banner
+    echo "## fault summary"
+    cat "$ROOT/evidence/faults/current-summary.md" 2>/dev/null || echo "no summary yet"
+    echo "## claims"
+    wc -l "$ROOT/evidence/claims/claim-evidence-map.jsonl" 2>/dev/null || true
+    ;;
+  logs)
+    banner
+    journalctl -u hermes* --no-pager -n 50 2>/dev/null || echo "no hermes units yet"
+    ;;
+  hada)
+    banner
+    echo "HADA_RUNTIME=NOT_DEPLOYED"
+    echo "Merge authority: GitHub PR + CI AUDIT-GATE"
+    ;;
+  *)
+    echo "usage: hes status|inventory|health|deploy|recovery|audit|logs|hada"
+    exit 1
+    ;;
+esac

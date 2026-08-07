@@ -1,0 +1,23 @@
+total 20
+drwxr-xr-x  5 root root 4096 Aug  7 15:33 .
+drwxr-xr-x 22 root root 4096 Aug  7 15:23 ..
+drwx--x--x  4 root root 4096 Aug  7 15:33 containerd
+drwxr-xr-x  3 root root 4096 Aug  7 15:21 go
+drwxr-xr-x  9 hps  hps  4096 Aug  7 15:21 hps-src
+/opt/hps-src/go.mod
+/opt/hps-src/.git/index
+/opt/hps-src/.git/description
+/opt/hps-src/.git/HEAD
+/opt/hps-src/.git/packed-refs
+/opt/hps-src/.git/config
+/opt/hps-src/.git/shallow
+/opt/hps-src/README.md
+/opt/hps-src/SECURITY.md
+/opt/hps-src/LICENSE
+/opt/hps-src/.gitignore
+/opt/hps-src/Makefile
+/opt/hps-src/docs/android-apk.md
+/opt/hps-src/docs/architecture.md
+/opt/hps-src/docs/manifests.md
+/opt/hps-src/docs/android-distribution.md
+/opt/hps-src/bin/hps

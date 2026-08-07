@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+evidence/backups/backup-*/
+evidence/backups-ci/
+evidence/backups/LATEST
+*.tgz
+*.enc
+compose/secrets/postgres_password
+.DS_Store

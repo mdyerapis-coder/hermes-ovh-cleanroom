@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+CMD="${1:-help}"
+EVIDENCE_DIR="$ROOT/evidence/deploy/hps"
+mkdir -p "$EVIDENCE_DIR"
+RUN_ID="${HPS_RUN_ID:-$(date -u +%Y%m%dT%H%M%SZ)}"
+SHA="$(git -C "$ROOT" rev-parse HEAD 2>/dev/null || echo unknown)"
+
+log() { echo "[hps $RUN_ID] $*"; echo "$(date -u --iso-8601=seconds) $*" >>"$EVIDENCE_DIR/$RUN_ID.log"; }
+
+assert_cleanroom() {
+  local host
+  host="$(hostname)"
+  if [[ "$host" != "hermes-ovh-cleanroom" ]]; then
+    # allow CI runners for plan/check only
+    if [[ "${HPS_ALLOW_NON_CLEANROOM:-}" != "1" && "$CMD" == "apply" ]]; then
+      echo "HPS apply blocked: host=$host is not hermes-ovh-cleanroom" >&2
+      exit 70
+    fi
+  fi
+}
+
+case "$CMD" in
+  preflight)
+    assert_cleanroom
+    bash "$ROOT/scripts/preflight.sh" "$EVIDENCE_DIR/preflight-$RUN_ID.txt"
+    log "preflight ok"
+    ;;
+  plan)
+    log "plan sha=$SHA"
+    python3 "$ROOT/scripts/ci/validate-config.py"
+    cat >"$EVIDENCE_DIR/plan-$RUN_ID.json" <<JSON
+{"run_id":"$RUN_ID","sha":"$SHA","phases":["accounts","dirs","contracts","scripts","health"],"mode":"plan"}
+JSON
+    log "plan written"
+    ;;
+  apply)
+    assert_cleanroom
+    log "apply start sha=$SHA"
+    # Idempotent local dirs
+    if [[ "$(hostname)" == "hermes-ovh-cleanroom" ]]; then
+      sudo mkdir -p /opt/hermes-cleanroom/{releases,shared/{data,models,backups,logs,secrets-runtime}}
+      if ! id hermes >/dev/null 2>&1; then
+        sudo useradd --system --create-home --home-dir /home/hermes --shell /usr/sbin/nologin hermes || true
+      fi
+      if ! id deploy >/dev/null 2>&1; then
+        sudo useradd --system --create-home --home-dir /home/deploy --shell /bin/bash deploy || true
+      fi
+    fi
+    bash "$ROOT/scripts/deploy.sh" "$SHA"
+    log "apply complete"
+    ;;
+  verify)
+    bash "$ROOT/scripts/healthcheck.sh"
+    log "verify ok"
+    ;;
+  resume)
+    log "resume not required; re-run apply (idempotent)"
+    "$0" apply
+    ;;
+  help|*)
+    echo "usage: hps preflight|plan|apply|verify|resume"
+    ;;
+esac

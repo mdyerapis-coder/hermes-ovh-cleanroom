@@ -1,0 +1,24 @@
+name: Scheduled Health
+
+on:
+  schedule:
+    - cron: "0 14 * * *"  # daily
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  health:
+    name: scheduled-health
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Read-only contract health
+        run: |
+          python3 scripts/ci/validate-config.py
+          python3 scripts/ci/fault-ledger-validate.py
+          python3 scripts/ci/claim-evidence-validate.py
+          bash hes/bin/hes status
+          bash hes/bin/hes hada | grep -q NOT_DEPLOYED
