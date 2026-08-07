@@ -1,6 +1,6 @@
 # Fault summary
 
-- total_records: 28
+- total_records: 34
 - open_or_active: 1
 - blocked: 1
 
