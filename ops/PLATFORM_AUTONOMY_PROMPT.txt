@@ -5,7 +5,7 @@ MANDATORY FIRST ACTIONS
 2. Read runbook/RUNBOOK-MANIFEST.md and every authoritative file in its current order, including runbook/part-100-hps-hes-platform-completion.md.
 3. Read policy/anti-hallucination-guardrails.md and runbook/part-99-post-completion-evolution-policy.md.
 4. Inspect the current protected main SHA, evidence/control/AUTONOMY_DONE.json, evidence/baseline/baseline-manifest.json, GitHub branch protection, required BOOTSTRAP-GATE/AUDIT-GATE status, deployed/current release, runtime health, open PRs, faults and external blockers.
-5. Treat the existing AUTONOMY_DONE marker as the preserved clean-room baseline. It is NOT the stop condition for this phase.
+5. Treat the existing AUTONOMY_DONE marker as the preserved clean-room baseline. It is NOT the stop condition for this phase. The old AUTONOMY_DONE.json is baseline only.
 6. The stop marker for this phase is evidence/control/PLATFORM_COMPLETION.json.
 
 MISSION
