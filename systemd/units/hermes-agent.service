@@ -1,16 +1,19 @@
 [Unit]
-Description=Hermes Agent (clean-room)
+Description=Hermes Agent (OVH clean-room)
 After=network-online.target
-ConditionPathExists=/opt/hermes-cleanroom/current
+Wants=network-online.target
+ConditionPathExists=/opt/hermes-cleanroom/shared/venvs/hermes/bin/python
 
 [Service]
 Type=simple
 User=hermes
 Group=hermes
-WorkingDirectory=/opt/hermes-cleanroom/current
+WorkingDirectory=/opt/hermes-cleanroom/shared/hermes-home
+EnvironmentFile=-/opt/hermes-cleanroom/shared/hermes-home/cleanroom.env
+Environment=HOME=/opt/hermes-cleanroom/shared/hermes-home
 Environment=HERMES_ENV=cleanroom
-# Placeholder until agent runtime is fully installed via audited PR
-ExecStart=/bin/bash -c 'echo "hermes-agent placeholder; install via audited runtime PR"; sleep infinity'
+# Prefer hermes CLI if installed; fallback sleep-keep for placeholder
+ExecStart=/bin/bash -c 'if [[ -x /opt/hermes-cleanroom/shared/venvs/hermes/bin/hermes ]]; then exec /opt/hermes-cleanroom/shared/venvs/hermes/bin/hermes --help >/dev/null; exec sleep infinity; else echo "hermes binary missing"; sleep infinity; fi'
 Restart=on-failure
 RestartSec=5
 NoNewPrivileges=true

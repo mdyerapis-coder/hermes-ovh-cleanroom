@@ -6,12 +6,10 @@ echo "=== hermes-ovh-cleanroom healthcheck ==="
 echo "host=$(hostname)"
 echo "time_utc=$(date -u --iso-8601=seconds)"
 
-# Identity
 if [[ "$(hostname)" != "hermes-ovh-cleanroom" ]]; then
   echo "WARN: hostname is not hermes-ovh-cleanroom"
 fi
 
-# Required files
 for f in config/services.yaml config/ports.yaml config/secret-contract.yaml VERSION; do
   if [[ ! -f "$ROOT/$f" ]]; then
     echo "FAIL missing $f"
@@ -21,7 +19,6 @@ for f in config/services.yaml config/ports.yaml config/secret-contract.yaml VERS
   fi
 done
 
-# Tailscale if present
 if command -v tailscale >/dev/null; then
   if tailscale status >/dev/null 2>&1; then
     echo "OK tailscale"
@@ -31,13 +28,9 @@ if command -v tailscale >/dev/null; then
   fi
 fi
 
-# HADA honesty
 echo "HADA_RUNTIME=NOT_DEPLOYED"
-
-# Telegram honesty
 echo "TELEGRAM_STATE=READY_FOR_EXCLUSIVE_CUTOVER"
 
-# Config validate
 if python3 "$ROOT/scripts/ci/validate-config.py" >/dev/null; then
   echo "OK config-contract"
 else
@@ -45,7 +38,27 @@ else
   FAIL=1
 fi
 
+if [[ -f /opt/hermes-cleanroom/shared/src/hermes-agent/.git/HEAD ]]; then
+  echo "OK hermes-src-present"
+else
+  echo "PENDING hermes-src-not-installed"
+fi
+
+if [[ -x /opt/hermes-cleanroom/shared/venvs/hermes/bin/python ]]; then
+  echo "OK hermes-venv"
+else
+  echo "PENDING hermes-venv"
+fi
+
+if bash "$ROOT/scripts/check-listeners.sh"; then
+  echo "OK listeners"
+else
+  echo "FAIL listeners"
+  FAIL=1
+fi
+
 if [[ "$FAIL" -ne 0 ]]; then
+  echo "HEALTH=FAIL"
   exit 1
 fi
 echo "HEALTH=PASS"
