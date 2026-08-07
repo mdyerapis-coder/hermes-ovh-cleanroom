@@ -1,12 +1,12 @@
 {
   "state": "COMPLETE_READY_FOR_EXCLUSIVE_CUTOVER",
   "final_report": "evidence/final/final-report.md",
-  "verified_commit_sha": "15ffd3d6e08f7d6b4cf02a9dd183b498f728c8a1",
+  "verified_commit_sha": "541fb479da40d35ce99b79bc7eb830644b35fb3f",
   "timestamp": "2026-08-07T08:56:43.670179+00:00",
   "evidence_verified": true,
   "host": "hermes-ovh-cleanroom",
   "tailscale_ipv4": "100.121.178.125",
-  "deployed_release": "/opt/hermes-cleanroom/releases/15ffd3d6e08f7d6b4cf02a9dd183b498f728c8a1",
+  "deployed_release": "/opt/hermes-cleanroom/releases/541fb479da40d35ce99b79bc7eb830644b35fb3f",
   "gates": [
     "BOOTSTRAP-GATE",
     "AUDIT-GATE"
@@ -16,5 +16,6 @@
     "Telegram READY_FOR_EXCLUSIVE_CUTOVER \u2014 no production poller",
     "HADA_RUNTIME=NOT_DEPLOYED",
     "External blockers documented in evidence/final/unresolved-blockers.md"
-  ]
+  ],
+  "post_merge_deployed_at": "2026-08-07T08:58:29.769000+00:00"
 }
