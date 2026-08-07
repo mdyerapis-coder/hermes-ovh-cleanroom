@@ -68,3 +68,24 @@ def test_platform_prompt_preserves_telegram_exclusivity_and_hps_authority():
     assert "HPS is the only infrastructure/runtime mutation authority" in text
     assert "Never run two production Telegram pollers" in text
     assert "The old AUTONOMY_DONE.json is baseline only" in text
+
+
+def test_platform_service_path_includes_grok_install_location():
+    unit = read("systemd/hermes-platform-controller.service")
+    assert "Environment=PATH=/home/ubuntu/.grok/bin:" in unit
+
+
+def test_platform_service_start_limit_is_in_unit_section():
+    unit = read("systemd/hermes-platform-controller.service")
+    unit_section, service_and_rest = unit.split("[Service]", 1)
+    service_section = service_and_rest.split("[Install]", 1)[0]
+    assert "StartLimitIntervalSec=0" in unit_section
+    assert "StartLimitIntervalSec" not in service_section
+
+
+def test_platform_installer_checks_service_user_can_resolve_grok():
+    installer = read("ops/install-platform-controller.sh")
+    assert 'SERVICE_PATH="/home/ubuntu/.grok/bin:' in installer
+    assert "sudo -u ubuntu env" in installer
+    assert "command -v grok >/dev/null" in installer
+    assert "service_grok=" in installer
