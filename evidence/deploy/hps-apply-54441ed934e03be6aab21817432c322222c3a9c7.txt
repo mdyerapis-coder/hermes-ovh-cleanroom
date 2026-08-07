@@ -1,0 +1,60 @@
+[hps 20260807T065233Z] apply start sha=54441ed934e03be6aab21817432c322222c3a9c7
+Default incoming policy changed to 'deny'
+(be sure to update your rules accordingly)
+Default outgoing policy changed to 'allow'
+(be sure to update your rules accordingly)
+Skipping adding existing rule
+Skipping adding existing rule (v6)
+Skipping adding existing rule
+Skipping adding existing rule (v6)
+Firewall is active and enabled on system startup
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), deny (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+22/tcp (OpenSSH)           ALLOW IN    Anywhere                  
+Anywhere on tailscale0     ALLOW IN    Anywhere                  
+22/tcp (OpenSSH (v6))      ALLOW IN    Anywhere (v6)             
+Anywhere (v6) on tailscale0 ALLOW IN    Anywhere (v6)             
+
+[host-bootstrap] host-bootstrap complete
+deploy: verifying target identity
+tailscale_ipv4=100.121.178.125
+deployed_sha=54441ed934e03be6aab21817432c322222c3a9c7
+current=/opt/hermes-cleanroom/releases/54441ed934e03be6aab21817432c322222c3a9c7
+=== hermes-ovh-cleanroom healthcheck ===
+host=hermes-ovh-cleanroom
+time_utc=2026-08-07T06:52:40+00:00
+OK config/services.yaml
+OK config/ports.yaml
+OK config/secret-contract.yaml
+OK VERSION
+OK tailscale
+HADA_RUNTIME=NOT_DEPLOYED
+TELEGRAM_STATE=READY_FOR_EXCLUSIVE_CUTOVER
+OK config-contract
+PENDING hermes-src-not-installed
+PENDING hermes-venv
+LISTENER CONTRACT PASS
+Netid State  Recv-Q Send-Q               Local Address:Port  Peer Address:PortProcess
+udp   UNCONN 0      0                          0.0.0.0:41641      0.0.0.0:*          
+udp   UNCONN 0      0                       127.0.0.54:53         0.0.0.0:*          
+udp   UNCONN 0      0                    127.0.0.53%lo:53         0.0.0.0:*          
+udp   UNCONN 0      0              139.99.221.109%ens3:68         0.0.0.0:*          
+udp   UNCONN 0      0                  10.1.3.171%ens4:68         0.0.0.0:*          
+udp   UNCONN 0      0                             [::]:41641         [::]:*          
+tcp   LISTEN 0      4096                     127.0.0.1:8080       0.0.0.0:*          
+tcp   LISTEN 0      4096                 127.0.0.53%lo:53         0.0.0.0:*          
+tcp   LISTEN 0      4096               100.121.178.125:52086      0.0.0.0:*          
+tcp   LISTEN 0      4096                       0.0.0.0:22         0.0.0.0:*          
+tcp   LISTEN 0      4096                    127.0.0.54:53         0.0.0.0:*          
+tcp   LISTEN 0      4096                          [::]:22            [::]:*          
+tcp   LISTEN 0      4096   [fd7a:115c:a1e0::e839:b27e]:38668         [::]:*          
+
+OK listeners
+HEALTH=PASS
+DEPLOY_OK=54441ed934e03be6aab21817432c322222c3a9c7
+[hps 20260807T065233Z] apply complete

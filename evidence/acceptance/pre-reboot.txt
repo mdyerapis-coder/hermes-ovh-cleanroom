@@ -1,0 +1,10 @@
+pre_reboot_utc=2026-08-07T06:53:04+00:00
+sha=54441ed934e03be6aab21817432c322222c3a9c7
+current=/opt/hermes-cleanroom/releases/54441ed934e03be6aab21817432c322222c3a9c7
+ 16:53:04 up  1:29,  1 user,  load average: 0.22, 0.06, 0.02
+active
+active
+               total        used        free      shared  buff/cache   available
+Mem:            30Gi       844Mi        27Gi       1.1Mi       3.2Gi        29Gi
+NAME      TYPE SIZE USED PRIO
+/swapfile file   8G   0B   -2

@@ -1,0 +1,6 @@
+tag=v2026.8.3
+src=/opt/hermes-cleanroom/shared/src/hermes-agent
+venv=/opt/hermes-cleanroom/shared/venvs/hermes
+sha=d71033a4077a6dfdcdb42c9e9eeab4c41e4a7012
+installed_utc=2026-08-07T06:52:49+00:00
+3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]
