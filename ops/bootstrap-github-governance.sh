@@ -50,20 +50,23 @@ fi
 echo "GitHub identity: $LOGIN"
 echo "GitHub plan: $PLAN"
 
-SMOKE_SHA="$(gh pr view 1 --repo "$REPO" --json headRefOid --jq .headRefOid)"
+# PR #2 exercised the final hardened trusted bootstrap auditor.
+SMOKE_SHA="$(gh pr view 2 --repo "$REPO" --json headRefOid --jq .headRefOid)"
 SMOKE_STATE="$(gh api "repos/$REPO/commits/$SMOKE_SHA/status" --jq '[.statuses[] | select(.context=="BOOTSTRAP-GATE")][0].state // "missing"')"
 
 if [[ "$SMOKE_STATE" != "success" ]]; then
-  echo "Refusing governance activation: proven BOOTSTRAP-GATE smoke status is $SMOKE_STATE" >&2
+  echo "Refusing governance activation: proven final BOOTSTRAP-GATE smoke status is $SMOKE_STATE" >&2
   exit 65
 fi
 
-echo "BOOTSTRAP-GATE smoke proof: success ($SMOKE_SHA)"
+echo "FINAL BOOTSTRAP-GATE smoke proof: success ($SMOKE_SHA)"
 
-# Repository merge policy: squash-only, auto-merge enabled, cleanup merged branches.
+# Bootstrap merge policy is squash-only, but auto-merge stays OFF until Grok's first
+# governance PR has created and exact-success-passed the full AUDIT-GATE. This prevents
+# BOOTSTRAP-GATE alone from racing and merging that first PR before the full auditor is live.
 gh api --method PATCH "repos/$REPO" --input - <<'JSON' >/dev/null
 {
-  "allow_auto_merge": true,
+  "allow_auto_merge": false,
   "allow_squash_merge": true,
   "allow_merge_commit": false,
   "allow_rebase_merge": false,
@@ -80,8 +83,9 @@ gh api --method PUT "repos/$REPO/actions/permissions/workflow" --input - <<'JSON
 }
 JSON
 
-# Require a PR but deliberately require zero human approvals. Require strict current-head BOOTSTRAP-GATE.
-# Enforce the rule for administrators so Grok cannot use the account's admin role as a bypass.
+# Require a PR but deliberately require zero human approvals. Bootstrap requires strict
+# current-head BOOTSTRAP-GATE. Grok must later add exact-success AUDIT-GATE to this required
+# list BEFORE enabling repository auto-merge.
 protection_err="$(mktemp)"
 if ! gh api --method PUT "repos/$REPO/branches/$BRANCH/protection" --input - 2>"$protection_err" <<'JSON' >/dev/null
 {
@@ -125,4 +129,5 @@ echo "=== VERIFIED MAIN PROTECTION ==="
 gh api "repos/$REPO/branches/$BRANCH/protection" --jq '{enforce_admins:.enforce_admins.enabled,required_status_checks:.required_status_checks.contexts,strict:.required_status_checks.strict,required_approvals:.required_pull_request_reviews.required_approving_review_count,force_pushes:.allow_force_pushes.enabled,deletions:.allow_deletions.enabled,linear_history:.required_linear_history.enabled}'
 
 echo
+echo "Bootstrap auto-merge intentionally remains disabled until full AUDIT-GATE activation."
 echo "GITHUB_GOVERNANCE_BOOTSTRAP=PASS"
