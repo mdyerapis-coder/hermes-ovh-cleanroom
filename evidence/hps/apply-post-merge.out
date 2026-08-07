@@ -1,0 +1,8 @@
+[hps apply] apply start plan_id=plan-20260807T114004Z-1cacf0b03118 sha=0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f
+[hps apply] backup exit=0
+[hps apply] deploy exit=0
+[hps apply] healthcheck exit=0
+{
+  "status": "APPLY_OK",
+  "evidence": "/home/ubuntu/hermes-ovh-cleanroom/evidence/hps/apply-plan-20260807T114004Z-1cacf0b03118.json"
+}

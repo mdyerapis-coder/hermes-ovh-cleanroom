@@ -1,0 +1,60 @@
+{
+  "command": "inventory",
+  "git_sha": "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "inventory": {
+    "environments": {
+      "cleanroom": {
+        "default_host": "hermes-ovh-cleanroom",
+        "mutation_policy": "allowed_with_plan"
+      },
+      "production": {
+        "default_host": "hermes-station-1",
+        "mutation_policy": "blocked_until_armed"
+      },
+      "rollback": {
+        "default_host": "hermes-station-1",
+        "mutation_policy": "blocked_until_armed"
+      },
+      "test": {
+        "default_host": "hermes-ovh-cleanroom",
+        "mutation_policy": "allowed_with_plan"
+      }
+    },
+    "hosts": {
+      "hermes-ovh-cleanroom": {
+        "environment": "cleanroom",
+        "expected_hostname": "hermes-ovh-cleanroom",
+        "mutation_allowed": true,
+        "notes": "Default clean-room mutation host and future production ownership target",
+        "release_root": "/opt/hermes-cleanroom",
+        "roles": [
+          "control_plane",
+          "hermes_runtime",
+          "hps_authority"
+        ],
+        "tailscale_name": "hermes-ovh-cleanroom"
+      },
+      "hermes-station-1": {
+        "environment": "production",
+        "expected_hostname": "hermes-station-1",
+        "mutation_allowed": false,
+        "notes": "Read-only until HPS cutover reaches ARMED with valid local arm transaction",
+        "release_root": "PENDING_VERIFICATION",
+        "roles": [
+          "legacy_production"
+        ],
+        "tailscale_name": "hermes-station-1"
+      }
+    }
+  },
+  "local_identity": {
+    "git_sha": "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+    "hostname": "hermes-ovh-cleanroom",
+    "machine_id": "4938a67ac6a44ba586faa1a02b99415f",
+    "observed_at": "2026-08-07T11:40:04.461871+00:00",
+    "release_current": "/opt/hermes-cleanroom/releases/95f77af1cfed5cde80b6d485f8adef897dcc86e1",
+    "tailscale_ipv4": "100.121.178.125",
+    "tailscale_name": "hermes-ovh-cleanroom.tail6e3008.ts.net"
+  },
+  "timestamp_utc": "2026-08-07T11:40:04.474938+00:00"
+}

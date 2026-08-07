@@ -1,0 +1,9 @@
+{
+  "arm_path_exists": false,
+  "cutover": "PREPARING",
+  "environment": "production",
+  "host_id": "hermes-station-1",
+  "mutation_allowed": false,
+  "mutation_policy": "blocked_until_armed",
+  "reason": "no_local_arm_state"
+}

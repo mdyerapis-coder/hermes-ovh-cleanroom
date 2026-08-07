@@ -1,0 +1,118 @@
+{
+  "acceptance_tests": [
+    "scripts/healthcheck.sh",
+    "scripts/check-listeners.sh",
+    "config-contract-validation"
+  ],
+  "affected_resources": [
+    "/opt/hermes-cleanroom/releases/0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+    "/opt/hermes-cleanroom/current",
+    "/opt/hermes-cleanroom/previous",
+    "systemd:hermes-agent.service",
+    "systemd:hermes-gateway.service"
+  ],
+  "backup_required": true,
+  "created_at": "2026-08-07T11:40:04.579228+00:00",
+  "current_state": {
+    "identity": {
+      "git_sha": "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+      "hostname": "hermes-ovh-cleanroom",
+      "machine_id": "4938a67ac6a44ba586faa1a02b99415f",
+      "observed_at": "2026-08-07T11:40:04.551351+00:00",
+      "release_current": "/opt/hermes-cleanroom/releases/95f77af1cfed5cde80b6d485f8adef897dcc86e1",
+      "tailscale_ipv4": "100.121.178.125",
+      "tailscale_name": "hermes-ovh-cleanroom.tail6e3008.ts.net"
+    },
+    "release_current": "/opt/hermes-cleanroom/releases/95f77af1cfed5cde80b6d485f8adef897dcc86e1",
+    "state_digest": "f97666dbfdd5f6f70d2a0f9e549f55ac0e214355e8fbbe5dfe6f74239f5943b0"
+  },
+  "desired_state": {
+    "git_sha": "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+    "hada_runtime": "NOT_DEPLOYED",
+    "release_path": "/opt/hermes-cleanroom/releases/0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+    "services": [
+      "hermes-agent",
+      "hermes-gateway",
+      "hsp",
+      "hps",
+      "hes"
+    ],
+    "telegram_polling": "disabled_until_exclusive_cutover"
+  },
+  "git_sha": "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "phases": [
+    "identity_verify",
+    "backup",
+    "accounts_dirs",
+    "deploy_release",
+    "verify"
+  ],
+  "plan_digest": "1cacf0b0311883aa1aab03fefd475f1b00f769035d8a20f6efcfab2328eff791",
+  "plan_id": "plan-20260807T114004Z-1cacf0b03118",
+  "production_protection": "allowed_with_plan",
+  "risk": "medium",
+  "rollback_target": "/opt/hermes-cleanroom/releases/95f77af1cfed5cde80b6d485f8adef897dcc86e1",
+  "schema": "hps.plan.v1",
+  "secret_references": [
+    {
+      "name": "TELEGRAM_BOT_TOKEN",
+      "present": false,
+      "required": false,
+      "source": "hsp_reference"
+    },
+    {
+      "name": "OPENAI_API_KEY",
+      "present": false,
+      "required": false,
+      "source": "hsp_reference"
+    },
+    {
+      "name": "ANTHROPIC_API_KEY",
+      "present": false,
+      "required": false,
+      "source": "hsp_reference"
+    },
+    {
+      "name": "XAI_API_KEY",
+      "present": false,
+      "required": false,
+      "source": "hsp_reference"
+    },
+    {
+      "name": "POSTGRES_PASSWORD",
+      "present": false,
+      "required": false,
+      "source": "hsp_reference"
+    },
+    {
+      "name": "N8N_ENCRYPTION_KEY",
+      "present": false,
+      "required": false,
+      "source": "hsp_reference"
+    },
+    {
+      "name": "BACKUP_ENCRYPTION_KEY",
+      "present": true,
+      "required": true,
+      "source": "hsp_reference"
+    },
+    {
+      "name": "TAILSCALE_AUTHKEY",
+      "present": false,
+      "required": false,
+      "source": "hsp_reference"
+    },
+    {
+      "name": "GHCR_TOKEN",
+      "present": false,
+      "required": false,
+      "source": "hsp_reference"
+    }
+  ],
+  "target": {
+    "environment": "cleanroom",
+    "expected_hostname": "hermes-ovh-cleanroom",
+    "host_id": "hermes-ovh-cleanroom",
+    "release_root": "/opt/hermes-cleanroom"
+  }
+}

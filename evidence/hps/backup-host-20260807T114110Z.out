@@ -1,0 +1,5 @@
+plaintext_local_backup=/home/ubuntu/hermes-ovh-cleanroom/evidence/backups/backup-20260807T114111Z/config-and-state.tgz
+note=BACKUP_ENCRYPTION_KEY_FILE not set; local unencrypted backup used for CI/self-test only
+backup_dir=/home/ubuntu/hermes-ovh-cleanroom/evidence/backups/backup-20260807T114111Z
+
+evidence=/home/ubuntu/hermes-ovh-cleanroom/evidence/hps/backup-cmd-20260807T114111Z.json

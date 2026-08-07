@@ -1,0 +1,5 @@
+{
+  "status": "BACKUP_OK",
+  "stdout": "plaintext_local_backup=/home/ubuntu/hermes-ovh-cleanroom/evidence/backups/backup-20260807T114111Z/config-and-state.tgz\nnote=BACKUP_ENCRYPTION_KEY_FILE not set; local unencrypted backup used for CI/self-test only\nbackup_dir=/home/ubuntu/hermes-ovh-cleanroom/evidence/backups/backup-20260807T114111Z\n",
+  "timestamp_utc": "2026-08-07T11:41:11.265843+00:00"
+}

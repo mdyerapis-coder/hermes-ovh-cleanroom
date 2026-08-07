@@ -1,0 +1,15 @@
+{
+  "arm_present": false,
+  "arm_reason": "absent",
+  "arm_valid": false,
+  "cutover_state": "PREPARING",
+  "history_tail": [],
+  "legal_next": [
+    "BLOCKED",
+    "FAILED",
+    "READY"
+  ],
+  "production_discovery": "READ_ONLY_UNTIL_ARMED",
+  "telegram_exclusivity": "NOT_PROVEN",
+  "updated_at": null
+}
