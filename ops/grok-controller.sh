@@ -109,10 +109,12 @@ PY
 
   if [[ ! -e "$STARTED_FILE" ]]; then
     PROMPT="$(cat "$PROMPT_FILE")"
+    SESSION_ARGS=(--session-id "$SESSION_ID")
     touch "$STARTED_FILE"
     chmod 600 "$STARTED_FILE"
   else
     PROMPT='Continue the existing Hermes OVH clean-room autonomous run. Re-read AGENTS.md and runbook/RUNBOOK-MANIFEST.md, inspect current Git/PR/CI/runtime/evidence state, ingest any controller faults from /var/lib/hermes-grok-controller/controller-faults.jsonl into the canonical fault ledger where applicable, and resume from the exact last verified point. Do not merely report progress. Keep executing and repairing until the manifest permits evidence/control/AUTONOMY_DONE.json to be created.'
+    SESSION_ARGS=(--resume "$SESSION_ID")
   fi
 
   echo "[$(date --iso-8601=seconds)] Starting/resuming Grok session $SESSION_ID" | tee -a "$RUNLOG"
@@ -122,7 +124,7 @@ PY
     --no-auto-update \
     --always-approve \
     --cwd "$REPO" \
-    --session-id "$SESSION_ID" \
+    "${SESSION_ARGS[@]}" \
     --output-format plain \
     -p "$PROMPT" \
     2>&1 | tee -a "$RUNLOG"
@@ -130,7 +132,7 @@ PY
   set -e
 
   if [[ "$rc" -ne 0 ]]; then
-    log_controller_fault "$rc" "Grok headless run exited non-zero; controller will retry same named session"
+    log_controller_fault "$rc" "Grok headless run exited non-zero; controller will retry existing named session using --resume after first launch"
     echo "Grok exited rc=$rc. Retrying same session after 300 seconds." | tee -a "$RUNLOG"
     sleep 300
   else
