@@ -2,6 +2,7 @@
 Description=Hermes HPS/HES platform completion Grok controller
 After=network-online.target tailscaled.service docker.service
 Wants=network-online.target tailscaled.service docker.service
+StartLimitIntervalSec=0
 
 [Service]
 Type=simple
@@ -11,13 +12,12 @@ SupplementaryGroups=docker
 WorkingDirectory=/home/ubuntu/hermes-ovh-cleanroom
 Environment=HOME=/home/ubuntu
 Environment=GROK_HOME=/home/ubuntu/.grok
-Environment=PATH=/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+Environment=PATH=/home/ubuntu/.grok/bin:/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 StateDirectory=hermes-platform-controller
 LogsDirectory=hermes-platform-controller
 ExecStart=/usr/local/libexec/hermes-platform-controller
 Restart=on-failure
 RestartSec=90
-StartLimitIntervalSec=0
 KillSignal=SIGINT
 TimeoutStopSec=90
 UMask=0077
