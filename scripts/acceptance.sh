@@ -28,7 +28,10 @@ def run(name, cmd, cwd=None):
 
 run("healthcheck", ["bash", "scripts/healthcheck.sh"])
 run("validate-config", ["python3", "scripts/ci/validate-config.py"])
-run("unit-tests", ["python3", "-m", "pytest", "-q", "tests/unit"])
+# Prefer project venv for pytest when present
+venv_py = root / ".venv/bin/python"
+py = str(venv_py) if venv_py.exists() else "python3"
+run("unit-tests", [py, "-m", "pytest", "-q", "tests/unit"])
 run("backup", ["bash", "scripts/backup.sh"])
 run("restore-test", ["bash", "scripts/restore-test.sh"])
 

@@ -1,0 +1,16 @@
+========================================
+   HERMES OVH CLEANROOM
+   host identity must never be ambiguous
+========================================
+## fault summary
+# Fault summary
+
+- total_records: 28
+- open_or_active: 1
+- blocked: 1
+
+## Open / active
+
+- FLT-20260807-PRODSSH01: Production read-only SSH inventory unavailable (blocked)
+## claims
+9 /home/ubuntu/hermes-ovh-cleanroom/evidence/claims/claim-evidence-map.jsonl

@@ -1,0 +1,19 @@
+{
+  "timestamp_utc": "2026-08-07T08:55:53.515070+00:00",
+  "host": "hermes-ovh-cleanroom",
+  "healthcheck": "PASS",
+  "listeners": "PASS",
+  "hsp": "OK",
+  "hes": "OK",
+  "hps_verify": "OK",
+  "hermes_agent_unit": "active",
+  "hermes_gateway_unit": "active",
+  "hada_runtime": "NOT_DEPLOYED",
+  "telegram_state": "READY_FOR_EXCLUSIVE_CUTOVER",
+  "evidence": [
+    "evidence/acceptance/health-final.txt",
+    "evidence/acceptance/listeners-final.txt",
+    "evidence/acceptance/hsp-status-final.txt",
+    "evidence/acceptance/hes-status-final.txt"
+  ]
+}

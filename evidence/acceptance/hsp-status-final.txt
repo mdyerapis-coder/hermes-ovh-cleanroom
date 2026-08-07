@@ -1,0 +1,11 @@
+HSP_STATUS
+TELEGRAM_BOT_TOKEN: optional-missing
+OPENAI_API_KEY: optional-missing
+ANTHROPIC_API_KEY: optional-missing
+XAI_API_KEY: optional-missing
+POSTGRES_PASSWORD: optional-missing
+N8N_ENCRYPTION_KEY: optional-missing
+BACKUP_ENCRYPTION_KEY: available
+TAILSCALE_AUTHKEY: optional-missing
+GHCR_TOKEN: optional-missing
+HSP_OK

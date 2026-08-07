@@ -1,0 +1,8 @@
+UNIT FILE                         STATE    PRESET
+hermes-agent.service              enabled  enabled
+hermes-gateway.service            enabled  enabled
+hermes-grok-controller.service    enabled  enabled
+hermes-healthcheck.service        disabled enabled
+hermes-post-reboot-verify.service enabled  enabled
+
+5 unit files listed.

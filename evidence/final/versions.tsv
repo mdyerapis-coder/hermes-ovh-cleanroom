@@ -1,0 +1,11 @@
+component	version
+os\tUbuntu 24.04.4 LTS
+kernel\t6.8.0-137-generic
+docker\tDocker version 29.7.2, build a7dcaa6
+compose\tDocker Compose version v5.4.0
+git\tgit version 2.43.0
+gh\tgh version 2.97.0 (2026-07-31)
+python\tPython 3.12.3
+hermes-agent-src\td71033a4077a6dfdcdb42c9e9eeab4c41e4a7012
+deployed_release\t/opt/hermes-cleanroom/releases/15ffd3d6e08f7d6b4cf02a9dd183b498f728c8a1
+repo_sha\t15ffd3d6e08f7d6b4cf02a9dd183b498f728c8a1

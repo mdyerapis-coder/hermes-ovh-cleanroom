@@ -1,0 +1,36 @@
+deploy: verifying target identity
+tailscale_ipv4=100.121.178.125
+deployed_sha=15ffd3d6e08f7d6b4cf02a9dd183b498f728c8a1
+current=/opt/hermes-cleanroom/releases/15ffd3d6e08f7d6b4cf02a9dd183b498f728c8a1
+=== hermes-ovh-cleanroom healthcheck ===
+host=hermes-ovh-cleanroom
+time_utc=2026-08-07T08:54:51+00:00
+OK config/services.yaml
+OK config/ports.yaml
+OK config/secret-contract.yaml
+OK VERSION
+OK tailscale
+HADA_RUNTIME=NOT_DEPLOYED
+TELEGRAM_STATE=READY_FOR_EXCLUSIVE_CUTOVER
+OK config-contract
+OK hermes-src-present
+OK hermes-venv
+LISTENER CONTRACT PASS
+Netid State  Recv-Q Send-Q               Local Address:Port  Peer Address:PortProcess
+udp   UNCONN 0      0                       127.0.0.54:53         0.0.0.0:*          
+udp   UNCONN 0      0                    127.0.0.53%lo:53         0.0.0.0:*          
+udp   UNCONN 0      0                  10.1.3.171%ens4:68         0.0.0.0:*          
+udp   UNCONN 0      0              139.99.221.109%ens3:68         0.0.0.0:*          
+udp   UNCONN 0      0                          0.0.0.0:41641      0.0.0.0:*          
+udp   UNCONN 0      0                             [::]:41641         [::]:*          
+tcp   LISTEN 0      4096                    127.0.0.54:53         0.0.0.0:*          
+tcp   LISTEN 0      4096                     127.0.0.1:8080       0.0.0.0:*          
+tcp   LISTEN 0      4096               100.121.178.125:52086      0.0.0.0:*          
+tcp   LISTEN 0      4096                       0.0.0.0:22         0.0.0.0:*          
+tcp   LISTEN 0      4096                 127.0.0.53%lo:53         0.0.0.0:*          
+tcp   LISTEN 0      4096   [fd7a:115c:a1e0::e839:b27e]:38668         [::]:*          
+tcp   LISTEN 0      4096                          [::]:22            [::]:*          
+
+OK listeners
+HEALTH=PASS
+DEPLOY_OK=15ffd3d6e08f7d6b4cf02a9dd183b498f728c8a1

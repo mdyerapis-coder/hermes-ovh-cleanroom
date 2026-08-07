@@ -1,0 +1,50 @@
+{
+  "timestamp_utc": "2026-08-07T08:55:53.261561+00:00",
+  "host": "hermes-ovh-cleanroom",
+  "checks": [
+    {
+      "name": "healthcheck",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout_tail": "   127.0.0.1:8080       0.0.0.0:*          \ntcp   LISTEN 0      4096               100.121.178.125:52086      0.0.0.0:*          \ntcp   LISTEN 0      4096                       0.0.0.0:22         0.0.0.0:*          \ntcp   LISTEN 0      4096                 127.0.0.53%lo:53         0.0.0.0:*          \ntcp   LISTEN 0      4096   [fd7a:115c:a1e0::e839:b27e]:38668         [::]:*          \ntcp   LISTEN 0      4096                          [::]:22            [::]:*          \n\nOK listeners\nHEALTH=PASS\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "validate-config",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout_tail": "CONFIG CONTRACT PASS\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "unit-tests",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout_tail": "............                                                             [100%]\n12 passed in 0.26s\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "backup",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout_tail": "encrypted_backup=/opt/hermes-cleanroom/shared/backups/backup-20260807T085553Z/config-and-state.tgz.enc\nbackup_dir=/opt/hermes-cleanroom/shared/backups/backup-20260807T085553Z\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "restore-test",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout_tail": "# Restore test 20260807T085553Z\n\n- source: /opt/hermes-cleanroom/shared/backups/backup-20260807T085553Z\n- work: /tmp/hermes-restore-test-rKpaDp\n- result: PASS\n- restored VERSION: 0.1.0-cleanroom\nrestore_report=/home/ubuntu/hermes-ovh-cleanroom/evidence/backups/restore-test-20260807T085553Z.md\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "hada-not-fabricated",
+      "status": "PASS"
+    },
+    {
+      "name": "telegram-not-live-without-e2e",
+      "status": "PASS"
+    }
+  ],
+  "overall": "PASS"
+}
