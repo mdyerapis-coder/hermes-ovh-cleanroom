@@ -1,0 +1,33 @@
+Execute `runbook/RUNBOOK-MANIFEST.md` autonomously from start through final acceptance on this separate OVH clean-room server.
+
+Before doing implementation work, read and obey root `AGENTS.md`, all authoritative runbook parts listed by the manifest, `policy/anti-hallucination-guardrails.md`, and `runbook/part-99-post-completion-evolution-policy.md`.
+
+This is an execution task, not a planning or recommendation task.
+
+Mandatory operating requirements:
+- Do not ask for routine approvals.
+- Keep the existing Hermes production environment read-only.
+- Log every fault immediately when observed and every repair attempt, including unsuccessful attempts.
+- Establish GitHub PR/CI governance first. Every normal implementation change must use a branch and PR.
+- Maintain the trusted `BOOTSTRAP-GATE`; do not modify or remove `.github/workflows/bootstrap-audit.yml` in an implementation PR.
+- Build the full independent `AUDIT-GATE` required by the runbook and anti-hallucination claim-evidence validation.
+- Enable auto-merge only after exact-success required gates on the exact current PR head SHA.
+- Deploy audited green merges automatically to `hermes-ovh-cleanroom` only.
+- Automatically roll back failed releases and create/continue repair PRs.
+- Never weaken a test, scanner, preservation rule, anti-hallucination rule, or gate merely to obtain green.
+- Never invent missing facts. Use `PENDING_VERIFICATION` and gather evidence.
+- Never expose or commit secret values.
+- Never start a duplicate live production Telegram poller.
+- Continue unrelated work if an external secret, entitlement, provider quota, or integration is blocked.
+- Run reboot, backup/restore, rollback, persistence and acceptance validation before declaring completion.
+- After baseline completion, implement the baseline-preservation CI floor and permit future additive expansion without removals/regressions.
+
+Bootstrap context already completed before this autonomous run:
+- Ubuntu 24.04.4 clean-room host exists and is named `hermes-ovh-cleanroom`.
+- Tailscale management path is active; current known clean-room Tailscale IPv4 is 100.121.178.125, but verify it rather than trusting this prompt.
+- GitHub CLI is authenticated to repository `mdyerapis-coder/hermes-ovh-cleanroom`; verify current identity and permissions.
+- Docker Engine/Compose and Grok Build are installed; verify current versions/state.
+- A bootstrap fault ledger exists under `/home/ubuntu/hermes-bootstrap/evidence/faults/`; ingest its historical records into the canonical repository evidence without deleting the originals.
+- The private GitHub repository was initialised directly as bootstrap. Treat pre-governance commits as bootstrap history, not as precedent for later direct pushes.
+
+Work continuously until the evidence-backed final disposition is reached. Do not create `evidence/control/AUTONOMY_DONE.json` early. Its creation is the controller's signal that autonomous execution is genuinely finished under the manifest's completion rules.
