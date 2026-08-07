@@ -14,14 +14,8 @@ fi
 git switch main
 git pull --ff-only origin main
 
-chmod +x \
-  ops/bootstrap-github-governance.sh \
-  ops/grok-controller.sh \
-  ops/install-grok-controller.sh \
-  ops/launch-autonomy.sh
-
-./ops/bootstrap-github-governance.sh
-./ops/install-grok-controller.sh
+bash ./ops/bootstrap-github-governance.sh
+bash ./ops/install-grok-controller.sh
 
 sudo systemctl start hermes-grok-controller.service
 sleep 3
