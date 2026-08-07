@@ -1,0 +1,19 @@
+{
+  "git_sha": "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "log": [
+    "2026-08-07T11:41:27.291345+00:00 apply start plan_id=plan-20260807T114127Z-9cee7f05ff9c sha=0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+    "2026-08-07T11:41:27.302741+00:00 backup exit=0",
+    "2026-08-07T11:41:33.458435+00:00 deploy exit=0",
+    "2026-08-07T11:41:33.548846+00:00 healthcheck exit=0"
+  ],
+  "plan_digest": "9cee7f05ff9c92c6592065ed3d1f11352c073a801ce7667f418eaace18042502",
+  "plan_id": "plan-20260807T114127Z-9cee7f05ff9c",
+  "status": "APPLY_OK",
+  "target": {
+    "environment": "cleanroom",
+    "expected_hostname": "hermes-ovh-cleanroom",
+    "host_id": "hermes-ovh-cleanroom",
+    "release_root": "/opt/hermes-cleanroom"
+  },
+  "timestamp_utc": "2026-08-07T11:41:33.548861+00:00"
+}

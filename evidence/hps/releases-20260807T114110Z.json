@@ -1,0 +1,14 @@
+{
+  "current": "/opt/hermes-cleanroom/releases/0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "git_sha": "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "previous": "/opt/hermes-cleanroom/releases/95f77af1cfed5cde80b6d485f8adef897dcc86e1",
+  "release_root": "/opt/hermes-cleanroom",
+  "releases": [
+    "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+    "15ffd3d6e08f7d6b4cf02a9dd183b498f728c8a1",
+    "34fd88d343178ed90ee898a77f982ceabbbf2ffa",
+    "541fb479da40d35ce99b79bc7eb830644b35fb3f",
+    "54441ed934e03be6aab21817432c322222c3a9c7",
+    "95f77af1cfed5cde80b6d485f8adef897dcc86e1"
+  ]
+}

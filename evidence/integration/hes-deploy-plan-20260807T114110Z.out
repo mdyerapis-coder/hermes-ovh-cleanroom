@@ -1,0 +1,17 @@
+========================================
+   HERMES OVH CLEANROOM
+   HERMES OPERATOR SHELL (HES v1)
+   host identity must never be ambiguous
+  title: deploy
+  environment: cleanroom
+  target_host: hermes-ovh-cleanroom
+  local_hostname: hermes-ovh-cleanroom
+  utc: 2026-08-07T11:41:12+00:00
+  git: 0ff5f4a
+========================================
+{
+  "plan_id": "plan-20260807T114112Z-9598bc939056",
+  "plan_digest": "9598bc939056ce33a765991bdaeb9e54493463c80a0ad1233b48fa081fe05274",
+  "path": "/var/lib/hermes-hps/plans/plan-20260807T114112Z-9598bc939056.json"
+}
+plan_written=/var/lib/hermes-hps/plans/plan-20260807T114112Z-9598bc939056.json

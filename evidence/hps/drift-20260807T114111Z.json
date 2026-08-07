@@ -1,0 +1,12 @@
+{
+  "deployed_release": "/opt/hermes-cleanroom/releases/0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "desired_git_sha": "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "drifts": [],
+  "state_digest": "bb6cabf19c7e17f9180f5f396dbd03f3ea30063baa75cea0922ba7e40f4b6524",
+  "status": "DRIFT_NONE",
+  "target": {
+    "environment": "cleanroom",
+    "host_id": "hermes-ovh-cleanroom"
+  },
+  "timestamp_utc": "2026-08-07T11:41:10.997346+00:00"
+}

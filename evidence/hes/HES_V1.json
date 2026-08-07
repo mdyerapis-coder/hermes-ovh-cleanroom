@@ -1,0 +1,37 @@
+{
+  "schema": "hes.v1.evidence",
+  "HES_V1": "PASS",
+  "evidence_verified": true,
+  "verified_commit_sha": "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "host": "hermes-ovh-cleanroom",
+  "timestamp_utc": "2026-08-07T11:42:35.063665+00:00",
+  "commands_proven": [
+    "status",
+    "health",
+    "hosts",
+    "host",
+    "services",
+    "service",
+    "releases",
+    "deploy",
+    "rollback",
+    "backup",
+    "restore",
+    "drift",
+    "faults",
+    "repairs",
+    "audit",
+    "github",
+    "secrets",
+    "cutover",
+    "hada",
+    "help"
+  ],
+  "environment_banner": "unambiguous environment + target_host on every view",
+  "mutation_delegation": "HPS_ONLY",
+  "hada_runtime": "NOT_DEPLOYED",
+  "telegram_state": "READY_FOR_EXCLUSIVE_CUTOVER",
+  "evidence": [
+    "evidence/hes/hes-commands-20260807T114110Z.out"
+  ]
+}

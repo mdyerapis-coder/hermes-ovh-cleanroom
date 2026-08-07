@@ -1,0 +1,40 @@
+{
+  "schema": "hps.hes.integration.v1",
+  "HPS_HES_INTEGRATION": "PASS",
+  "evidence_verified": true,
+  "verified_commit_sha": "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "host": "hermes-ovh-cleanroom",
+  "timestamp_utc": "2026-08-07T11:42:35.063665+00:00",
+  "authority_flow": "User/HES -> HPS -> HSP/host/runtime -> evidence -> HES status",
+  "proofs": [
+    "hes deploy plan invokes hps plan",
+    "hes cutover status invokes hps cutover status",
+    "hes secrets uses hsp + hps secrets-refs",
+    "hes rollback/backup/restore delegate to hps",
+    "hps apply success only after healthcheck verify"
+  ],
+  "evidence": [
+    "evidence/integration/hes-deploy-plan-20260807T114110Z.out",
+    "evidence/hes/hes-commands-20260807T114110Z.out",
+    "evidence/hps/apply-plan-20260807T114004Z-1cacf0b03118.json",
+    "evidence/hps/apply-plan-20260807T114127Z-9cee7f05ff9c.json",
+    "evidence/hps/apply-post-merge.out",
+    "evidence/hps/backup-cmd-20260807T114111Z.json",
+    "evidence/hps/backup-host-20260807T114110Z.out",
+    "evidence/hps/cutover-illegal-20260807T114110Z.out",
+    "evidence/hps/cutover-status-20260807T114110Z.json",
+    "evidence/hps/drift-20260807T114111Z.json",
+    "evidence/hps/drift-host-20260807T114110Z.out",
+    "evidence/hps/host-proof-suite-20260807T114110Z.log",
+    "evidence/hps/inventory-20260807T114004Z.json",
+    "evidence/hps/inventory-20260807T114111Z.json",
+    "evidence/hps/plan-20260807T114004Z-1cacf0b03118.json",
+    "evidence/hps/plan-20260807T114112Z-9598bc939056.json",
+    "evidence/hps/plan-20260807T114127Z-9cee7f05ff9c.json",
+    "evidence/hps/plan-post-merge.out",
+    "evidence/hps/protect-production-20260807T114110Z.json",
+    "evidence/hps/reapply-after-rollback-20260807T114126Z.out",
+    "evidence/hps/reboot-persistence-20260807T114110Z.out",
+    "evidence/hps/reboot-persistence-20260807T114111Z.json"
+  ]
+}

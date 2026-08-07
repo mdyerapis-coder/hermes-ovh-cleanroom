@@ -1,0 +1,32 @@
+{
+  "state": "COMPLETE_HPS_HES_READY_FOR_CUTOVER",
+  "evidence_verified": true,
+  "verified_commit_sha": "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "final_report": "evidence/final/platform-completion-report.md",
+  "timestamp": "2026-08-07T11:42:35.063665+00:00",
+  "host": "hermes-ovh-cleanroom",
+  "deployed_release": "/opt/hermes-cleanroom/releases/0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "HPS_V1": "PASS",
+  "HES_V1": "PASS",
+  "HPS_HES_INTEGRATION": "PASS",
+  "CUTOVER_READY": "BLOCKED_EXTERNAL",
+  "Telegram_exclusive": false,
+  "Telegram_live_e2e": false,
+  "Telegram_state": "READY_FOR_EXCLUSIVE_CUTOVER",
+  "HADA_RUNTIME": "NOT_DEPLOYED",
+  "rollback_available": true,
+  "production_baseline_created": false,
+  "baseline_autonomy_done": "evidence/control/AUTONOMY_DONE.json",
+  "evidence": {
+    "hps_v1": "evidence/hps/HPS_V1.json",
+    "hes_v1": "evidence/hes/HES_V1.json",
+    "integration": "evidence/integration/HPS_HES_INTEGRATION.json",
+    "blockers": "evidence/final/platform-blockers.json",
+    "report": "evidence/final/platform-completion-report.md"
+  },
+  "notes": [
+    "Software/platform HPS+HES complete and host-proven",
+    "Exclusive production cutover blocked by external ACL/offline production, missing Telegram/provider secrets, and absence of local arm",
+    "AUTONOMY_DONE remains preserved clean-room baseline marker only"
+  ]
+}

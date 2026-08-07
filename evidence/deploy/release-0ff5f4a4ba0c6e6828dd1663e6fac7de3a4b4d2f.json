@@ -1,0 +1,7 @@
+{
+  "sha": "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "host": "hermes-ovh-cleanroom",
+  "timestamp_utc": "2026-08-07T11:41:33+00:00",
+  "path": "/opt/hermes-cleanroom/releases/0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "status": "deployed_candidate"
+}

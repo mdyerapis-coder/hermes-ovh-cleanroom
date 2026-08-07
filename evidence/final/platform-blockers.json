@@ -1,0 +1,42 @@
+{
+  "timestamp_utc": "2026-08-07T11:42:35.063665+00:00",
+  "blockers": [
+    {
+      "id": "BLK-PROD-SSH-ACL",
+      "classification": "BLOCKED_EXTERNAL_PERMISSION",
+      "summary": "Read-only SSH to hermes-station-1 unavailable (ACL and/or host offline)",
+      "impact": "Cannot complete production inventory re-verify or exclusive Telegram cutover",
+      "evidence": [
+        "evidence/discovery/production-readonly-probe-post-hps-v1.txt"
+      ]
+    },
+    {
+      "id": "BLK-TELEGRAM-SECRET",
+      "classification": "BLOCKED_EXTERNAL_SECRET",
+      "summary": "TELEGRAM_BOT_TOKEN not present in clean-room HSP secrets-runtime",
+      "impact": "No live Telegram E2E; Telegram remains READY_FOR_EXCLUSIVE_CUTOVER",
+      "evidence": [
+        "evidence/hps/HPS_V1.json",
+        "config/secret-contract.yaml"
+      ]
+    },
+    {
+      "id": "BLK-PROVIDER-SECRETS",
+      "classification": "BLOCKED_EXTERNAL_SECRET",
+      "summary": "Optional provider keys (OPENAI/ANTHROPIC/XAI) not present",
+      "impact": "Live provider completion tests not performed",
+      "evidence": [
+        "evidence/final/unresolved-blockers.md"
+      ]
+    },
+    {
+      "id": "BLK-ARM-NOT-SET",
+      "classification": "BLOCKED_ARM_PREREQUISITE",
+      "summary": "No production arm transaction; cutover not ARMED",
+      "impact": "Production mutation correctly refused by HPS protect",
+      "evidence": [
+        "evidence/hps/HPS_V1.json"
+      ]
+    }
+  ]
+}

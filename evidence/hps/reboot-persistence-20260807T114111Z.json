@@ -1,0 +1,17 @@
+{
+  "command": "reboot-persistence",
+  "note": "Does not perform reboot; use scripts/reboot-test.sh for full test",
+  "path_checks": {
+    "hps_state_dir": true,
+    "release_current": true,
+    "shared_data": true,
+    "systemd_hermes_agent": true,
+    "systemd_hermes_gateway": true
+  },
+  "status": "PERSISTENCE_OBSERVED",
+  "timestamp_utc": "2026-08-07T11:41:11.199498+00:00",
+  "unit_enabled": {
+    "hermes-agent": "enabled",
+    "hermes-gateway": "enabled"
+  }
+}

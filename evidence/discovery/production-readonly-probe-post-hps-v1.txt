@@ -1,0 +1,6 @@
+=== tailscale peers ===
+100.121.178.125  hermes-ovh-cleanroom   m.dyer.apis@  linux    -                           
+100.81.157.33    hermes-station-1       m.dyer.apis@  linux    offline, last seen 5h ago   
+100.85.215.9     hermes-station         m.dyer.apis@  linux    offline, last seen 1d ago   
+=== ssh probe ===
+ssh: Could not resolve hostname hermes-station-1: Temporary failure in name resolution

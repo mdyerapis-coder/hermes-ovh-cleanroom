@@ -1,0 +1,9 @@
+# Restore test 20260807T114111Z
+
+- source: /home/ubuntu/hermes-ovh-cleanroom/evidence/backups/backup-20260807T114111Z
+- work: /tmp/hermes-restore-test-wXkbW1
+- result: PASS
+- restored VERSION: 1.0.0-cleanroom-baseline
+restore_report=/home/ubuntu/hermes-ovh-cleanroom/evidence/backups/restore-test-20260807T114111Z.md
+
+evidence=/home/ubuntu/hermes-ovh-cleanroom/evidence/hps/restore-test-20260807T114111Z.json

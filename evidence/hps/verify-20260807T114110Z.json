@@ -1,0 +1,21 @@
+{
+  "checks": {
+    "config_contract": {
+      "exit_code": 0
+    },
+    "healthcheck": {
+      "exit_code": 0,
+      "stdout_tail": "=== hermes-ovh-cleanroom healthcheck ===\nhost=hermes-ovh-cleanroom\ntime_utc=2026-08-07T11:41:10+00:00\nOK config/services.yaml\nOK config/ports.yaml\nOK config/secret-contract.yaml\nOK VERSION\nOK tailscale\nHADA_RUNTIME=NOT_DEPLOYED\nTELEGRAM_STATE=READY_FOR_EXCLUSIVE_CUTOVER\nOK config-contract\nOK hermes-src-present\nOK hermes-venv\nLISTENER CONTRACT PASS\nNetid State  Recv-Q Send-Q               Local Address:Port  Peer Address:PortProcess\nudp   UNCONN 0      0                       127.0.0.54:53         0.0.0.0:*          \nudp   UNCONN 0      0                    127.0.0.53%lo:53         0.0.0.0:*          \nudp   UNCONN 0      0                  10.1.3.171%ens4:68         0.0.0.0:*          \nudp   UNCONN 0      0              139.99.221.109%ens3:68         0.0.0.0:*          \nudp   UNCONN 0      0                          0.0.0.0:41641      0.0.0.0:*          \nudp   UNCONN 0      0                             [::]:41641         [::]:*          \ntcp   LISTEN 0      4096                    127.0.0.54:53         0.0.0.0:*          \ntcp   LISTEN 0      4096                     127.0.0.1:8080       0.0.0.0:*          \ntcp   LISTEN 0      4096               100.121.178.125:52086      0.0.0.0:*          \ntcp   LISTEN 0      4096                       0.0.0.0:22         0.0.0.0:*          \ntcp   LISTEN 0      4096                 127.0.0.53%lo:53         0.0.0.0:*          \ntcp   LISTEN 0      4096   [fd7a:115c:a1e0::e839:b27e]:38668         [::]:*          \ntcp   LISTEN 0      4096                          [::]:22            [::]:*          \n\nOK listeners\nHEALTH=PASS\n"
+    },
+    "listeners": {
+      "exit_code": 0
+    }
+  },
+  "command": "verify",
+  "status": "VERIFY_OK",
+  "target": {
+    "environment": "cleanroom",
+    "host_id": "hermes-ovh-cleanroom"
+  },
+  "timestamp_utc": "2026-08-07T11:41:10.645184+00:00"
+}

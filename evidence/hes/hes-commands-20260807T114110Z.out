@@ -1,18 +1,248 @@
-{"fault_id":"FLT-20260807-EC1D1A7D","timestamp_utc":"2026-08-07T05:33:57.101925+00:00","timestamp_melbourne":"2026-08-07T15:33:57.101925+10:00","phase":"toolchain-bootstrap","host":"hermes-ovh-cleanroom","command":"command -v grok","exit_code":1,"symptom":"Bootstrap command returned non-zero","classification":"bootstrap","severity":"error","repair_status":"resolved","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"expected":"Bootstrap command succeeds","observed":"Bootstrap command returned non-zero","evidence_paths":["evidence/faults/bootstrap-ingest/bootstrap-fault-ledger.jsonl"],"root_cause":"grok CLI was not on PATH during early bootstrap; later installed","repair_attempts":0,"final_disposition":"Resolved: grok present on host","ingested_from":"hermes-bootstrap/evidence/faults/fault-ledger.jsonl"}
-{"fault_id":"FLT-20260807-4C86DBC7","timestamp_utc":"2026-08-07T05:34:13.679589+00:00","timestamp_melbourne":"2026-08-07T15:34:13.679589+10:00","phase":"toolchain-bootstrap","host":"hermes-ovh-cleanroom","command":"command -v grok","exit_code":1,"symptom":"Bootstrap command returned non-zero","classification":"bootstrap","severity":"error","repair_status":"resolved","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"expected":"Bootstrap command succeeds","observed":"Bootstrap command returned non-zero","evidence_paths":["evidence/faults/bootstrap-ingest/bootstrap-fault-ledger.jsonl"],"root_cause":"grok CLI was not on PATH during early bootstrap; later installed","repair_attempts":0,"final_disposition":"Resolved: grok present on host","ingested_from":"hermes-bootstrap/evidence/faults/fault-ledger.jsonl"}
-{"fault_id":"FLT-20260807-053551","timestamp_utc":"2026-08-07T05:35:51.844864+00:00","timestamp_melbourne":"2026-08-07T15:35:51.844864+10:00","phase":"toolchain-bootstrap","host":"hermes-ovh-cleanroom","symptom":"SSH session disconnected while GitHub/Docker/Grok toolchain bootstrap was running","expected":"Bootstrap session remains connected until validation completes","observed":"Interactive SSH session dropped before completion","classification":"network","severity":"warning","root_cause":null,"repair_status":"resolved","repair_attempts":0,"final_disposition":"Bootstrap completed in later session; controller session retries replaced interactive SSH","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"evidence_paths":["evidence/faults/bootstrap-ingest/bootstrap-fault-ledger.jsonl"],"ingested_from":"hermes-bootstrap/evidence/faults/fault-ledger.jsonl"}
-{"fault_id":"FLT-20260807-PRODSSH01","timestamp_utc":"2026-08-07T06:35:00.830865+00:00","timestamp_melbourne":"2026-08-07T16:35:00.830865+10:00","phase":"discovery","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":"main","commit_sha":"dcbedc2ba6fc008a34ed784c467e9e9ffd22bbf3","pull_request":null,"workflow_run":null,"job":null,"command":"ssh hermes-station-1 (read-only inventory)","exit_code":255,"symptom":"Production read-only SSH inventory unavailable","expected":"Read-only inventory commands succeed without mutation","observed":"tailnet policy does not permit SSH as user ubuntu","evidence_paths":["evidence/discovery/production-readonly-probe.txt"],"classification":"permission","severity":"warning","root_cause":"Tailscale ACL does not allow ubuntu@hermes-station-1 SSH from clean-room","repair_status":"blocked","repair_attempts":0,"final_disposition":"BLOCKED_EXTERNAL_PERMISSION \u2014 continue using upstream source clones and clean-room local discovery"}
-{"fault_id":"FLT-20260807-TRIVY001","timestamp_utc":"2026-08-07T06:45:15.641900+00:00","timestamp_melbourne":"2026-08-07T16:45:15.641900+10:00","phase":"ci","host":"github-actions","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":"grok/pr01-governance-audit-gate","commit_sha":"3f46214713b9e9e6d5ba4cd22a731cc758dbd511","pull_request":"3","workflow_run":"31154880972","job":"container-vulnerability-scan","command":"curl trivy_0.58.1_Linux-64bit.tar.gz","exit_code":2,"symptom":"container-vulnerability-scan failed installing trivy","expected":"Pinned trivy release asset downloads and scans succeed","observed":"HTTP 404 / not gzip; trivy v0.58.1 asset missing","evidence_paths":["https://github.com/mdyerapis-coder/hermes-ovh-cleanroom/actions/runs/31154880972"],"classification":"dependency","severity":"error","root_cause":"Outdated Trivy release asset URL","repair_status":"resolved","repair_attempts":1,"final_disposition":"Resolved by pinning Trivy v0.73.0; AUDIT-GATE success on 009bce4"}
-{"fault_id":"CTRL-20260807T065317Z","timestamp_utc":"2026-08-07T06:53:17.516302+00:00","timestamp_melbourne":"2026-08-07T16:53:17.516302+10:00","phase":"autonomous-controller","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"command":null,"exit_code":1,"symptom":"Grok headless run exited non-zero; controller will retry same named session","expected":"Grok headless run exits 0 after completion","observed":"Grok headless run exited non-zero; controller will retry same named session","evidence_paths":["evidence/faults/controller-ingest/controller-faults.jsonl"],"classification":"controller","severity":"warning","root_cause":"Session interrupted or incomplete before AUTONOMY_DONE; controller retries","repair_status":"resolved","repair_attempts":0,"final_disposition":"Ingested historical controller retry events; autonomous execution resumed and continued","ingested_from":"/var/lib/hermes-grok-controller/controller-faults.jsonl"}
-{"fault_id":"CTRL-20260807T065818Z","timestamp_utc":"2026-08-07T06:58:18.997898+00:00","timestamp_melbourne":"2026-08-07T16:58:18.997898+10:00","phase":"autonomous-controller","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"command":null,"exit_code":1,"symptom":"Grok headless run exited non-zero; controller will retry same named session","expected":"Grok headless run exits 0 after completion","observed":"Grok headless run exited non-zero; controller will retry same named session","evidence_paths":["evidence/faults/controller-ingest/controller-faults.jsonl"],"classification":"controller","severity":"warning","root_cause":"Session interrupted or incomplete before AUTONOMY_DONE; controller retries","repair_status":"resolved","repair_attempts":0,"final_disposition":"Ingested historical controller retry events; autonomous execution resumed and continued","ingested_from":"/var/lib/hermes-grok-controller/controller-faults.jsonl"}
-{"fault_id":"CTRL-20260807T070319Z","timestamp_utc":"2026-08-07T07:03:19.995758+00:00","timestamp_melbourne":"2026-08-07T17:03:19.995758+10:00","phase":"autonomous-controller","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"command":null,"exit_code":1,"symptom":"Grok headless run exited non-zero; controller will retry same named session","expected":"Grok headless run exits 0 after completion","observed":"Grok headless run exited non-zero; controller will retry same named session","evidence_paths":["evidence/faults/controller-ingest/controller-faults.jsonl"],"classification":"controller","severity":"warning","root_cause":"Session interrupted or incomplete before AUTONOMY_DONE; controller retries","repair_status":"resolved","repair_attempts":0,"final_disposition":"Ingested historical controller retry events; autonomous execution resumed and continued","ingested_from":"/var/lib/hermes-grok-controller/controller-faults.jsonl"}
-{"fault_id":"CTRL-20260807T070821Z","timestamp_utc":"2026-08-07T07:08:21.027040+00:00","timestamp_melbourne":"2026-08-07T17:08:21.027040+10:00","phase":"autonomous-controller","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"command":null,"exit_code":1,"symptom":"Grok headless run exited non-zero; controller will retry same named session","expected":"Grok headless run exits 0 after completion","observed":"Grok headless run exited non-zero; controller will retry same named session","evidence_paths":["evidence/faults/controller-ingest/controller-faults.jsonl"],"classification":"controller","severity":"warning","root_cause":"Session interrupted or incomplete before AUTONOMY_DONE; controller retries","repair_status":"resolved","repair_attempts":0,"final_disposition":"Ingested historical controller retry events; autonomous execution resumed and continued","ingested_from":"/var/lib/hermes-grok-controller/controller-faults.jsonl"}
-{"fault_id":"CTRL-20260807T071322Z","timestamp_utc":"2026-08-07T07:13:22.038856+00:00","timestamp_melbourne":"2026-08-07T17:13:22.038856+10:00","phase":"autonomous-controller","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"command":null,"exit_code":1,"symptom":"Grok headless run exited non-zero; controller will retry same named session","expected":"Grok headless run exits 0 after completion","observed":"Grok headless run exited non-zero; controller will retry same named session","evidence_paths":["evidence/faults/controller-ingest/controller-faults.jsonl"],"classification":"controller","severity":"warning","root_cause":"Session interrupted or incomplete before AUTONOMY_DONE; controller retries","repair_status":"resolved","repair_attempts":0,"final_disposition":"Ingested historical controller retry events; autonomous execution resumed and continued","ingested_from":"/var/lib/hermes-grok-controller/controller-faults.jsonl"}
-{"fault_id":"CTRL-20260807T071823Z","timestamp_utc":"2026-08-07T07:18:23.052576+00:00","timestamp_melbourne":"2026-08-07T17:18:23.052576+10:00","phase":"autonomous-controller","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"command":null,"exit_code":1,"symptom":"Grok headless run exited non-zero; controller will retry same named session","expected":"Grok headless run exits 0 after completion","observed":"Grok headless run exited non-zero; controller will retry same named session","evidence_paths":["evidence/faults/controller-ingest/controller-faults.jsonl"],"classification":"controller","severity":"warning","root_cause":"Session interrupted or incomplete before AUTONOMY_DONE; controller retries","repair_status":"resolved","repair_attempts":0,"final_disposition":"Ingested historical controller retry events; autonomous execution resumed and continued","ingested_from":"/var/lib/hermes-grok-controller/controller-faults.jsonl"}
-{"fault_id":"CTRL-20260807T072324Z","timestamp_utc":"2026-08-07T07:23:24.058268+00:00","timestamp_melbourne":"2026-08-07T17:23:24.058268+10:00","phase":"autonomous-controller","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"command":null,"exit_code":1,"symptom":"Grok headless run exited non-zero; controller will retry same named session","expected":"Grok headless run exits 0 after completion","observed":"Grok headless run exited non-zero; controller will retry same named session","evidence_paths":["evidence/faults/controller-ingest/controller-faults.jsonl"],"classification":"controller","severity":"warning","root_cause":"Session interrupted or incomplete before AUTONOMY_DONE; controller retries","repair_status":"resolved","repair_attempts":0,"final_disposition":"Ingested historical controller retry events; autonomous execution resumed and continued","ingested_from":"/var/lib/hermes-grok-controller/controller-faults.jsonl"}
-{"fault_id":"CTRL-20260807T072825Z","timestamp_utc":"2026-08-07T07:28:25.108197+00:00","timestamp_melbourne":"2026-08-07T17:28:25.108197+10:00","phase":"autonomous-controller","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"command":null,"exit_code":1,"symptom":"Grok headless run exited non-zero; controller will retry same named session","expected":"Grok headless run exits 0 after completion","observed":"Grok headless run exited non-zero; controller will retry same named session","evidence_paths":["evidence/faults/controller-ingest/controller-faults.jsonl"],"classification":"controller","severity":"warning","root_cause":"Session interrupted or incomplete before AUTONOMY_DONE; controller retries","repair_status":"resolved","repair_attempts":0,"final_disposition":"Ingested historical controller retry events; autonomous execution resumed and continued","ingested_from":"/var/lib/hermes-grok-controller/controller-faults.jsonl"}
-{"fault_id":"CTRL-20260807T073326Z","timestamp_utc":"2026-08-07T07:33:26.085818+00:00","timestamp_melbourne":"2026-08-07T17:33:26.085818+10:00","phase":"autonomous-controller","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"command":null,"exit_code":1,"symptom":"Grok headless run exited non-zero; controller will retry same named session","expected":"Grok headless run exits 0 after completion","observed":"Grok headless run exited non-zero; controller will retry same named session","evidence_paths":["evidence/faults/controller-ingest/controller-faults.jsonl"],"classification":"controller","severity":"warning","root_cause":"Session interrupted or incomplete before AUTONOMY_DONE; controller retries","repair_status":"resolved","repair_attempts":0,"final_disposition":"Ingested historical controller retry events; autonomous execution resumed and continued","ingested_from":"/var/lib/hermes-grok-controller/controller-faults.jsonl"}
-{"fault_id":"CTRL-20260807T073827Z","timestamp_utc":"2026-08-07T07:38:27.066573+00:00","timestamp_melbourne":"2026-08-07T17:38:27.066573+10:00","phase":"autonomous-controller","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"command":null,"exit_code":1,"symptom":"Grok headless run exited non-zero; controller will retry same named session","expected":"Grok headless run exits 0 after completion","observed":"Grok headless run exited non-zero; controller will retry same named session","evidence_paths":["evidence/faults/controller-ingest/controller-faults.jsonl"],"classification":"controller","severity":"warning","root_cause":"Session interrupted or incomplete before AUTONOMY_DONE; controller retries","repair_status":"resolved","repair_attempts":0,"final_disposition":"Ingested historical controller retry events; autonomous execution resumed and continued","ingested_from":"/var/lib/hermes-grok-controller/controller-faults.jsonl"}
+---- hes status ----
+========================================
+   HERMES OVH CLEANROOM
+   HERMES OPERATOR SHELL (HES v1)
+   host identity must never be ambiguous
+  title: status
+  environment: cleanroom
+  target_host: hermes-ovh-cleanroom
+  local_hostname: hermes-ovh-cleanroom
+  utc: 2026-08-07T11:41:11+00:00
+  git: 0ff5f4a
+========================================
+version: 1.0.0-cleanroom-baseline
+HADA_RUNTIME=NOT_DEPLOYED
+TELEGRAM_STATE=READY_FOR_EXCLUSIVE_CUTOVER
+release_current: /opt/hermes-cleanroom/releases/0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f
+release_previous: /opt/hermes-cleanroom/releases/95f77af1cfed5cde80b6d485f8adef897dcc86e1
+mutation_authority: HPS
+--- hps protect ---
+{
+  "arm_path_exists": false,
+  "cutover": "PREPARING",
+  "environment": "cleanroom",
+  "host_id": "hermes-ovh-cleanroom",
+  "mutation_allowed": true,
+  "mutation_policy": "allowed_with_plan",
+  "reason": "policy_allows"
+}
+--- hps cutover status ---
+{
+  "arm_present": false,
+  "arm_reason": "absent",
+  "arm_valid": false,
+  "cutover_state": "PREPARING",
+  "history_tail": [],
+  "legal_next": [
+    "BLOCKED",
+    "FAILED",
+    "READY"
+  ],
+  "production_discovery": "READ_ONLY_UNTIL_ARMED",
+---- hes health ----
+========================================
+   HERMES OVH CLEANROOM
+   HERMES OPERATOR SHELL (HES v1)
+   host identity must never be ambiguous
+  title: health
+  environment: cleanroom
+  target_host: hermes-ovh-cleanroom
+  local_hostname: hermes-ovh-cleanroom
+  utc: 2026-08-07T11:41:11+00:00
+  git: 0ff5f4a
+========================================
+=== hermes-ovh-cleanroom healthcheck ===
+host=hermes-ovh-cleanroom
+time_utc=2026-08-07T11:41:11+00:00
+OK config/services.yaml
+OK config/ports.yaml
+OK config/secret-contract.yaml
+OK VERSION
+OK tailscale
+HADA_RUNTIME=NOT_DEPLOYED
+TELEGRAM_STATE=READY_FOR_EXCLUSIVE_CUTOVER
+OK config-contract
+OK hermes-src-present
+OK hermes-venv
+LISTENER CONTRACT PASS
+Netid State  Recv-Q Send-Q               Local Address:Port  Peer Address:PortProcess
+udp   UNCONN 0      0                       127.0.0.54:53         0.0.0.0:*          
+udp   UNCONN 0      0                    127.0.0.53%lo:53         0.0.0.0:*          
+udp   UNCONN 0      0                  10.1.3.171%ens4:68         0.0.0.0:*          
+udp   UNCONN 0      0              139.99.221.109%ens3:68         0.0.0.0:*          
+udp   UNCONN 0      0                          0.0.0.0:41641      0.0.0.0:*          
+udp   UNCONN 0      0                             [::]:41641         [::]:*          
+tcp   LISTEN 0      4096                    127.0.0.54:53         0.0.0.0:*          
+tcp   LISTEN 0      4096                     127.0.0.1:8080       0.0.0.0:*          
+tcp   LISTEN 0      4096               100.121.178.125:52086      0.0.0.0:*          
+tcp   LISTEN 0      4096                       0.0.0.0:22         0.0.0.0:*          
+tcp   LISTEN 0      4096                 127.0.0.53%lo:53         0.0.0.0:*          
+tcp   LISTEN 0      4096   [fd7a:115c:a1e0::e839:b27e]:38668         [::]:*          
+tcp   LISTEN 0      4096                          [::]:22            [::]:*          
+
+---- hes hosts ----
+========================================
+   HERMES OVH CLEANROOM
+   HERMES OPERATOR SHELL (HES v1)
+   host identity must never be ambiguous
+  title: hosts
+  environment: cleanroom
+  target_host: hermes-ovh-cleanroom
+  local_hostname: hermes-ovh-cleanroom
+  utc: 2026-08-07T11:41:11+00:00
+  git: 0ff5f4a
+========================================
+{
+  "command": "inventory",
+  "git_sha": "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "inventory": {
+    "environments": {
+      "cleanroom": {
+        "default_host": "hermes-ovh-cleanroom",
+        "mutation_policy": "allowed_with_plan"
+      },
+      "production": {
+        "default_host": "hermes-station-1",
+        "mutation_policy": "blocked_until_armed"
+      },
+      "rollback": {
+        "default_host": "hermes-station-1",
+        "mutation_policy": "blocked_until_armed"
+      },
+      "test": {
+        "default_host": "hermes-ovh-cleanroom",
+        "mutation_policy": "allowed_with_plan"
+      }
+    },
+    "hosts": {
+      "hermes-ovh-cleanroom": {
+        "environment": "cleanroom",
+        "expected_hostname": "hermes-ovh-cleanroom",
+        "mutation_allowed": true,
+        "notes": "Default clean-room mutation host and future production ownership target",
+        "release_root": "/opt/hermes-cleanroom",
+---- hes services ----
+========================================
+   HERMES OVH CLEANROOM
+   HERMES OPERATOR SHELL (HES v1)
+   host identity must never be ambiguous
+  title: services
+  environment: cleanroom
+  target_host: hermes-ovh-cleanroom
+  local_hostname: hermes-ovh-cleanroom
+  utc: 2026-08-07T11:41:11+00:00
+  git: 0ff5f4a
+========================================
+## config/services.yaml
+# Declared clean-room service inventory (intended state)
+services:
+  hermes-agent:
+    kind: runtime
+    required: true
+    supervision: systemd
+    user: hermes
+    state: deployed
+  hermes-gateway:
+    kind: gateway
+    required: true
+    supervision: systemd
+    user: hermes
+    polling: disabled_until_exclusive_cutover
+    state: deployed
+  hsp:
+    kind: secrets
+    required: true
+    supervision: local
+    state: deployed
+  hps:
+    kind: provisioning
+    required: true
+    supervision: cli
+    state: deployed
+  hes:
+    kind: operations
+    required: true
+---- hes releases ----
+========================================
+   HERMES OVH CLEANROOM
+   HERMES OPERATOR SHELL (HES v1)
+   host identity must never be ambiguous
+  title: releases
+  environment: cleanroom
+  target_host: hermes-ovh-cleanroom
+  local_hostname: hermes-ovh-cleanroom
+  utc: 2026-08-07T11:41:11+00:00
+  git: 0ff5f4a
+========================================
+{
+  "current": "/opt/hermes-cleanroom/releases/0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "git_sha": "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "previous": "/opt/hermes-cleanroom/releases/95f77af1cfed5cde80b6d485f8adef897dcc86e1",
+  "release_root": "/opt/hermes-cleanroom",
+  "releases": [
+    "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+    "15ffd3d6e08f7d6b4cf02a9dd183b498f728c8a1",
+    "34fd88d343178ed90ee898a77f982ceabbbf2ffa",
+    "541fb479da40d35ce99b79bc7eb830644b35fb3f",
+    "54441ed934e03be6aab21817432c322222c3a9c7",
+    "95f77af1cfed5cde80b6d485f8adef897dcc86e1"
+  ]
+}
+---- hes deploy ----
+========================================
+   HERMES OVH CLEANROOM
+   HERMES OPERATOR SHELL (HES v1)
+   host identity must never be ambiguous
+  title: deploy
+  environment: cleanroom
+  target_host: hermes-ovh-cleanroom
+  local_hostname: hermes-ovh-cleanroom
+  utc: 2026-08-07T11:41:11+00:00
+  git: 0ff5f4a
+========================================
+{
+  "current": "/opt/hermes-cleanroom/releases/0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "git_sha": "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+  "previous": "/opt/hermes-cleanroom/releases/95f77af1cfed5cde80b6d485f8adef897dcc86e1",
+  "release_root": "/opt/hermes-cleanroom",
+  "releases": [
+    "0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f",
+    "15ffd3d6e08f7d6b4cf02a9dd183b498f728c8a1",
+    "34fd88d343178ed90ee898a77f982ceabbbf2ffa",
+    "541fb479da40d35ce99b79bc7eb830644b35fb3f",
+    "54441ed934e03be6aab21817432c322222c3a9c7",
+    "95f77af1cfed5cde80b6d485f8adef897dcc86e1"
+  ]
+}
+total 24
+drwxr-xr-x  4 root root 4096 Aug  7 21:40 .
+drwxr-xr-x  6 root root 4096 Aug  7 16:48 ..
+lrwxrwxrwx  1 root root   71 Aug  7 21:40 current -> /opt/hermes-cleanroom/releases/0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f
+lrwxrwxrwx  1 root root   71 Aug  7 21:40 previous -> /opt/hermes-cleanroom/releases/95f77af1cfed5cde80b6d485f8adef897dcc86e1
+drwxr-xr-x  8 root root 4096 Aug  7 21:40 releases
+drwxr-xr-x 10 root root 4096 Aug  7 16:52 shared
+---- hes faults ----
+========================================
+   HERMES OVH CLEANROOM
+   HERMES OPERATOR SHELL (HES v1)
+   host identity must never be ambiguous
+  title: faults
+  environment: cleanroom
+  target_host: hermes-ovh-cleanroom
+  local_hostname: hermes-ovh-cleanroom
+  utc: 2026-08-07T11:41:12+00:00
+  git: 0ff5f4a
+========================================
+# Fault summary
+
+- total_records: 34
+- open_or_active: 1
+- blocked: 1
+
+## Open / active
+
+- FLT-20260807-PRODSSH01: Production read-only SSH inventory unavailable (blocked)
+## fault ledger tail
 {"fault_id":"CTRL-20260807T074328Z","timestamp_utc":"2026-08-07T07:43:28.253080+00:00","timestamp_melbourne":"2026-08-07T17:43:28.253080+10:00","phase":"autonomous-controller","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"command":null,"exit_code":1,"symptom":"Grok headless run exited non-zero; controller will retry same named session","expected":"Grok headless run exits 0 after completion","observed":"Grok headless run exited non-zero; controller will retry same named session","evidence_paths":["evidence/faults/controller-ingest/controller-faults.jsonl"],"classification":"controller","severity":"warning","root_cause":"Session interrupted or incomplete before AUTONOMY_DONE; controller retries","repair_status":"resolved","repair_attempts":0,"final_disposition":"Ingested historical controller retry events; autonomous execution resumed and continued","ingested_from":"/var/lib/hermes-grok-controller/controller-faults.jsonl"}
 {"fault_id":"CTRL-20260807T074829Z","timestamp_utc":"2026-08-07T07:48:29.242978+00:00","timestamp_melbourne":"2026-08-07T17:48:29.242978+10:00","phase":"autonomous-controller","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"command":null,"exit_code":1,"symptom":"Grok headless run exited non-zero; controller will retry same named session","expected":"Grok headless run exits 0 after completion","observed":"Grok headless run exited non-zero; controller will retry same named session","evidence_paths":["evidence/faults/controller-ingest/controller-faults.jsonl"],"classification":"controller","severity":"warning","root_cause":"Session interrupted or incomplete before AUTONOMY_DONE; controller retries","repair_status":"resolved","repair_attempts":0,"final_disposition":"Ingested historical controller retry events; autonomous execution resumed and continued","ingested_from":"/var/lib/hermes-grok-controller/controller-faults.jsonl"}
 {"fault_id":"CTRL-20260807T075330Z","timestamp_utc":"2026-08-07T07:53:30.238800+00:00","timestamp_melbourne":"2026-08-07T17:53:30.238800+10:00","phase":"autonomous-controller","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":null,"commit_sha":null,"pull_request":null,"workflow_run":null,"job":null,"command":null,"exit_code":1,"symptom":"Grok headless run exited non-zero; controller will retry same named session","expected":"Grok headless run exits 0 after completion","observed":"Grok headless run exited non-zero; controller will retry same named session","evidence_paths":["evidence/faults/controller-ingest/controller-faults.jsonl"],"classification":"controller","severity":"warning","root_cause":"Session interrupted or incomplete before AUTONOMY_DONE; controller retries","repair_status":"resolved","repair_attempts":0,"final_disposition":"Ingested historical controller retry events; autonomous execution resumed and continued","ingested_from":"/var/lib/hermes-grok-controller/controller-faults.jsonl"}
@@ -32,4 +262,185 @@
 {"fault_id":"FLT-20260807-32CB0389","timestamp_utc":"2026-08-07T11:36:48.894949+00:00","timestamp_melbourne":"2026-08-07T21:36:48.894949+10:00","phase":"hps","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":"grok/hps-hes-v1-platform-completion","commit_sha":"0b23565af616398a1c8863954b13c9600cdc199f","pull_request":null,"workflow_run":null,"job":null,"command":"hps","exit_code":1,"symptom":"production mutation blocked op=apply reason=no_local_arm_state","expected":"ok","observed":"production mutation blocked op=apply reason=no_local_arm_state","evidence_paths":[],"classification":"safety","severity":"critical","root_cause":"Expected fail-closed HPS safety gate during HPS v1 development/unit tests","repair_status":"resolved","repair_attempts":0,"final_disposition":"Triaged: fail-closed protection behaved correctly; not an operational outage. HPS_TEST_MODE / test-state now skips ledger writes for synthetic gate proofs.","triaged_at_utc":"2026-08-07T11:37:26.082015+00:00"}
 {"fault_id":"FLT-20260807-D4E041D7","timestamp_utc":"2026-08-07T11:36:50.036337+00:00","timestamp_melbourne":"2026-08-07T21:36:50.036337+10:00","phase":"hps","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":"grok/hps-hes-v1-platform-completion","commit_sha":"0b23565af616398a1c8863954b13c9600cdc199f","pull_request":null,"workflow_run":null,"job":null,"command":"hps","exit_code":1,"symptom":"production mutation blocked op=apply reason=no_local_arm_state","expected":"ok","observed":"production mutation blocked op=apply reason=no_local_arm_state","evidence_paths":[],"classification":"safety","severity":"critical","root_cause":"Expected fail-closed HPS safety gate during HPS v1 development/unit tests","repair_status":"resolved","repair_attempts":0,"final_disposition":"Triaged: fail-closed protection behaved correctly; not an operational outage. HPS_TEST_MODE / test-state now skips ledger writes for synthetic gate proofs.","triaged_at_utc":"2026-08-07T11:37:26.082028+00:00"}
 {"fault_id":"FLT-20260807-0F080DAA","timestamp_utc":"2026-08-07T11:36:50.180647+00:00","timestamp_melbourne":"2026-08-07T21:36:50.180647+10:00","phase":"hps","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":"grok/hps-hes-v1-platform-completion","commit_sha":"0b23565af616398a1c8863954b13c9600cdc199f","pull_request":null,"workflow_run":null,"job":null,"command":"hps","exit_code":1,"symptom":"illegal cutover transition PREPARING -> OLD_FENCED","expected":"ok","observed":"illegal cutover transition PREPARING -> OLD_FENCED","evidence_paths":[],"classification":"safety","severity":"critical","root_cause":"Expected fail-closed HPS safety gate during HPS v1 development/unit tests","repair_status":"resolved","repair_attempts":0,"final_disposition":"Triaged: fail-closed protection behaved correctly; not an operational outage. HPS_TEST_MODE / test-state now skips ledger writes for synthetic gate proofs.","triaged_at_utc":"2026-08-07T11:37:26.082042+00:00"}
-{"fault_id":"FLT-20260807-7D3E8354","timestamp_utc":"2026-08-07T11:41:11.482386+00:00","timestamp_melbourne":"2026-08-07T21:41:11.482386+10:00","phase":"hps","host":"hermes-ovh-cleanroom","repository":"mdyerapis-coder/hermes-ovh-cleanroom","branch":"main","commit_sha":"0ff5f4a4ba0c6e6828dd1663e6fac7de3a4b4d2f","pull_request":null,"workflow_run":null,"job":null,"command":"hps","exit_code":1,"symptom":"illegal cutover transition PREPARING -> OLD_FENCED","expected":"ok","observed":"illegal cutover transition PREPARING -> OLD_FENCED","evidence_paths":[],"classification":"safety","severity":"warning","root_cause":null,"repair_status":"untriaged","repair_attempts":0,"final_disposition":null}
+---- hes repairs ----
+========================================
+   HERMES OVH CLEANROOM
+   HERMES OPERATOR SHELL (HES v1)
+   host identity must never be ambiguous
+  title: repairs
+  environment: cleanroom
+  target_host: hermes-ovh-cleanroom
+  local_hostname: hermes-ovh-cleanroom
+  utc: 2026-08-07T11:41:12+00:00
+  git: 0ff5f4a
+========================================
+## repair attempts
+total 16
+drwx------ 2 ubuntu ubuntu 4096 Aug  7 21:28 .
+drwx------ 5 ubuntu ubuntu 4096 Aug  7 21:40 ..
+-rw-rw-r-- 1 ubuntu ubuntu 1129 Aug  7 21:28 FLT-20260807-PLATPATH01-1.json
+-rw------- 1 ubuntu ubuntu  572 Aug  7 16:48 FLT-20260807-TRIVY001-1.json
+total 24
+drwxrwxr-x  2 ubuntu ubuntu 4096 Aug  7 21:28 .
+drwxrwxr-x 18 ubuntu docker 4096 Aug  7 21:41 ..
+-rw-rw-r--  1 ubuntu ubuntu 2027 Aug  7 18:46 2026-08-07-grok-session-resume.md
+-rw-------  1 ubuntu ubuntu  558 Aug  7 18:52 20260807T084939Z-runtime-evidence-recovery.md
+-rw-------  1 ubuntu ubuntu  513 Aug  7 21:15 20260807T111319Z-post-final-runtime-evidence.md
+-rw-rw-r--  1 ubuntu ubuntu 1932 Aug  7 21:28 20260807T112300Z-platform-controller-grok-path.md
+## repair-status open faults (ledger scan)
+FLT-20260807-PRODSSH01: blocked — Production read-only SSH inventory unavailable
+FLT-20260807-7D3E8354: untriaged — illegal cutover transition PREPARING -> OLD_FENCED
+open_or_untriaged_approx=2
+---- hes audit ----
+========================================
+   HERMES OVH CLEANROOM
+   HERMES OPERATOR SHELL (HES v1)
+   host identity must never be ambiguous
+  title: audit
+  environment: cleanroom
+  target_host: hermes-ovh-cleanroom
+  local_hostname: hermes-ovh-cleanroom
+  utc: 2026-08-07T11:41:12+00:00
+  git: 0ff5f4a
+========================================
+## fault summary
+# Fault summary
+
+- total_records: 34
+- open_or_active: 1
+- blocked: 1
+
+## Open / active
+
+- FLT-20260807-PRODSSH01: Production read-only SSH inventory unavailable (blocked)
+## claims count
+20 /home/ubuntu/hermes-ovh-cleanroom/evidence/claims/claim-evidence-map.jsonl
+## baseline
+baseline_manifest=present
+## autonomy / platform markers
+AUTONOMY_DONE=present
+PLATFORM_COMPLETION=absent
+---- hes secrets ----
+========================================
+   HERMES OVH CLEANROOM
+   HERMES OPERATOR SHELL (HES v1)
+   host identity must never be ambiguous
+  title: secrets
+  environment: cleanroom
+  target_host: hermes-ovh-cleanroom
+  local_hostname: hermes-ovh-cleanroom
+  utc: 2026-08-07T11:41:12+00:00
+  git: 0ff5f4a
+========================================
+HES shows HSP presence only; values never displayed
+HSP_STATUS
+TELEGRAM_BOT_TOKEN: optional-missing
+OPENAI_API_KEY: optional-missing
+ANTHROPIC_API_KEY: optional-missing
+XAI_API_KEY: optional-missing
+POSTGRES_PASSWORD: optional-missing
+N8N_ENCRYPTION_KEY: optional-missing
+BACKUP_ENCRYPTION_KEY: available
+TAILSCALE_AUTHKEY: optional-missing
+GHCR_TOKEN: optional-missing
+HSP_OK
+{
+  "command": "secrets-refs",
+  "note": "names and presence only; values never disclosed",
+  "references": [
+    {
+      "name": "TELEGRAM_BOT_TOKEN",
+      "present": false,
+      "required": false,
+      "source": "hsp_reference"
+    },
+    {
+      "name": "OPENAI_API_KEY",
+      "present": false,
+      "required": false,
+      "source": "hsp_reference"
+    },
+    {
+---- hes cutover ----
+========================================
+   HERMES OVH CLEANROOM
+   HERMES OPERATOR SHELL (HES v1)
+   host identity must never be ambiguous
+  title: cutover
+  environment: cleanroom
+  target_host: hermes-ovh-cleanroom
+  local_hostname: hermes-ovh-cleanroom
+  utc: 2026-08-07T11:41:12+00:00
+  git: 0ff5f4a
+========================================
+{
+  "arm_present": false,
+  "arm_reason": "absent",
+  "arm_valid": false,
+  "cutover_state": "PREPARING",
+  "history_tail": [],
+  "legal_next": [
+    "BLOCKED",
+    "FAILED",
+    "READY"
+  ],
+  "production_discovery": "READ_ONLY_UNTIL_ARMED",
+  "telegram_exclusivity": "NOT_PROVEN",
+  "updated_at": null
+}
+---- hes hada ----
+========================================
+   HERMES OVH CLEANROOM
+   HERMES OPERATOR SHELL (HES v1)
+   host identity must never be ambiguous
+  title: hada
+  environment: cleanroom
+  target_host: hermes-ovh-cleanroom
+  local_hostname: hermes-ovh-cleanroom
+  utc: 2026-08-07T11:41:12+00:00
+  git: 0ff5f4a
+========================================
+HADA_RUNTIME=NOT_DEPLOYED
+Merge authority: GitHub PR + CI AUDIT-GATE
+No genuine HADA runtime observed unless evidence proves otherwise.
+---- hes help ----
+========================================
+   HERMES OVH CLEANROOM
+   HERMES OPERATOR SHELL (HES v1)
+   host identity must never be ambiguous
+  title: help
+  environment: cleanroom
+  target_host: hermes-ovh-cleanroom
+  local_hostname: hermes-ovh-cleanroom
+  utc: 2026-08-07T11:41:12+00:00
+  git: 0ff5f4a
+========================================
+HES v1 commands (slash and bare forms accepted for several):
+  status          Overall operator status + HPS protect/cutover
+  health          Run healthcheck
+  hosts           HPS inventory
+  host [id]       Resolve single host target
+  services        Service inventory + unit states
+  service <name>  systemctl status for one unit
+  releases        Release list / current / previous via HPS
+  deploy          status|plan|apply (apply -> HPS)
+  rollback        Delegate rollback to HPS
+  backup          Delegate backup to HPS
+  restore         test (default) via HPS restore-test
+  drift           Drift detection via HPS
+  faults          Fault ledger view
+  repairs         Repair attempts view
+  audit           Local audit/evidence summary
+  github          GitHub protection / PR / commits
+  secrets         HSP presence + HPS secret refs
+  cutover         status|transition|arm|disarm via HPS
+  hada            Always truthful HADA_RUNTIME
+  inventory       Baseline inventory view
+  recovery        Baseline recovery view
+  logs            Recent journal
+  help            This help
+
+Environment context:
+  HES_ENVIRONMENT / HPS_ENVIRONMENT (default: cleanroom)
+  HES_TARGET_HOST / HPS_TARGET_HOST (default: hermes-ovh-cleanroom)
+  HES_COLOR=auto|always|never
