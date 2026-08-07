@@ -1,0 +1,7 @@
+{
+  "post_merge_sha": "541fb479da40d35ce99b79bc7eb830644b35fb3f",
+  "deployed_at": "2026-08-07T08:58:11.132357+00:00",
+  "health": "PASS",
+  "autonomy_done_path": "evidence/control/AUTONOMY_DONE.json",
+  "note": "AUTONOMY_DONE landed on main via PR #9; runtime re-verified after deploy of merge SHA"
+}
