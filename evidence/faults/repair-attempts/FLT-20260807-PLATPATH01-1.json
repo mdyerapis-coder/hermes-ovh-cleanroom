@@ -1,0 +1,25 @@
+{
+  "fault_id": "FLT-20260807-PLATPATH01",
+  "attempt": 1,
+  "timestamp_utc": "2026-08-07T11:23:00Z",
+  "timestamp_melbourne": "2026-08-07T21:23:00+10:00",
+  "phase": "platform-controller-bootstrap",
+  "host": "hermes-ovh-cleanroom",
+  "classification": "controller-environment",
+  "symptom": "hermes-platform-controller.service exited status 1 before creating session-id",
+  "root_cause": "systemd service PATH omitted /home/ubuntu/.grok/bin where Grok is installed",
+  "repair": [
+    "prepend /home/ubuntu/.grok/bin to service PATH",
+    "move StartLimitIntervalSec=0 from Service to Unit section",
+    "verify service-user Grok resolution in installer",
+    "add regression tests"
+  ],
+  "status": "PENDING_VERIFICATION",
+  "evidence": [
+    "evidence/repairs/20260807T112300Z-platform-controller-grok-path.md",
+    "systemd/hermes-platform-controller.service",
+    "ops/install-platform-controller.sh",
+    "tests/unit/test_platform_completion_controller.py"
+  ],
+  "completion_condition": "Audited merge plus host retest proves clean unit verification, Grok resolution, session creation, and successful controller start"
+}

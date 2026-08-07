@@ -4,6 +4,7 @@ umask 077
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 EXPECTED_REPO="/home/ubuntu/hermes-ovh-cleanroom"
+SERVICE_PATH="/home/ubuntu/.grok/bin:/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 if [[ "$REPO" != "$EXPECTED_REPO" ]]; then
   echo "Refusing install from unexpected repository path: $REPO" >&2
@@ -35,6 +36,14 @@ command -v docker >/dev/null
 command -v tailscale >/dev/null
 sudo -n true
 
+sudo -u ubuntu env \
+  HOME=/home/ubuntu \
+  GROK_HOME=/home/ubuntu/.grok \
+  PATH="$SERVICE_PATH" \
+  bash -c 'command -v grok >/dev/null'
+
+grep -Fq 'Environment=PATH=/home/ubuntu/.grok/bin:' systemd/hermes-platform-controller.service
+
 python3 - <<'PY'
 import json
 from pathlib import Path
@@ -53,10 +62,12 @@ sudo install -m 0644 "$REPO/systemd/hermes-platform-controller.service" /etc/sys
 sudo systemctl daemon-reload
 sudo systemctl enable hermes-platform-controller.service
 sudo systemd-analyze verify /etc/systemd/system/hermes-platform-controller.service
+systemctl show hermes-platform-controller.service -p Environment --value | grep -Fq '/home/ubuntu/.grok/bin:'
 
 echo "=== PLATFORM CONTROLLER INSTALL VERIFIED ==="
 echo "repo=$REPO"
 echo "grok=$(grok version 2>/dev/null || grok --version 2>/dev/null || true)"
+echo "service_grok=$(sudo -u ubuntu env HOME=/home/ubuntu GROK_HOME=/home/ubuntu/.grok PATH="$SERVICE_PATH" command -v grok)"
 echo "github=$(gh api user --jq .login)"
 echo "tailscale=$(tailscale ip -4)"
 echo "docker=$(docker version --format '{{.Server.Version}}')"
