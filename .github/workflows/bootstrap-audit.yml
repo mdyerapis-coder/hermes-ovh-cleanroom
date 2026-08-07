@@ -34,6 +34,7 @@ jobs:
           set -Eeuo pipefail
 
           required=(
+            AGENTS.md
             runbook/part-00.md
             runbook/full-part-01.md
             runbook/full-part-02.md
@@ -43,6 +44,10 @@ jobs:
             runbook/RUNBOOK-MANIFEST.md
             policy/anti-hallucination-guardrails.md
             runbook/part-99-post-completion-evolution-policy.md
+            ops/AUTONOMY_PROMPT.txt
+            ops/grok-controller.sh
+            ops/install-grok-controller.sh
+            systemd/hermes-grok-controller.service
             .github/workflows/bootstrap-audit.yml
           )
 
@@ -53,21 +58,22 @@ jobs:
             }
           done
 
-          if git diff --quiet "$BASE_SHA" "$HEAD_SHA" -- .github/workflows/bootstrap-audit.yml; then
-            :
-          else
+          if ! git diff --quiet "$BASE_SHA" "$HEAD_SHA" -- .github/workflows/bootstrap-audit.yml; then
             echo "The trusted bootstrap auditor cannot be modified by an implementation PR." >&2
             exit 1
           fi
 
           grep -q 'PENDING_VERIFICATION' policy/anti-hallucination-guardrails.md
           grep -qi 'evidence' policy/anti-hallucination-guardrails.md
-          grep -qi 'never remove\|non-removal\|additive' runbook/part-99-post-completion-evolution-policy.md
+          grep -Eqi 'never remove|non-removal|additive' runbook/part-99-post-completion-evolution-policy.md
           grep -q 'AUTONOMY_DONE.json' runbook/RUNBOOK-MANIFEST.md
           grep -q 'AUDIT-GATE' runbook/RUNBOOK-MANIFEST.md
+          grep -q 'runbook/RUNBOOK-MANIFEST.md' AGENTS.md
+          grep -q -- '--always-approve' ops/grok-controller.sh
+          grep -q -- '--no-auto-update' ops/grok-controller.sh
 
-          # Prevent removal/renaming of the authoritative bootstrap floor.
           deleted="$(git diff --name-status "$BASE_SHA" "$HEAD_SHA" -- \
+            AGENTS.md \
             runbook/part-00.md \
             runbook/full-part-01.md \
             runbook/full-part-02.md \
@@ -77,7 +83,11 @@ jobs:
             runbook/RUNBOOK-MANIFEST.md \
             policy/anti-hallucination-guardrails.md \
             runbook/part-99-post-completion-evolution-policy.md \
-            | awk '$1 ~ /^D|^R/ {print}')"
+            ops/AUTONOMY_PROMPT.txt \
+            ops/grok-controller.sh \
+            ops/install-grok-controller.sh \
+            systemd/hermes-grok-controller.service \
+            | awk '$1 ~ /^(D|R)/ {print}')"
 
           if [[ -n "$deleted" ]]; then
             echo "Authoritative bootstrap material may not be deleted or renamed:" >&2
