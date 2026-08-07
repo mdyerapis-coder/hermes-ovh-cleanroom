@@ -1,0 +1,31 @@
+[Unit]
+Description=Hermes OVH autonomous Grok implementation controller
+Documentation=https://github.com/mdyerapis-coder/hermes-ovh-cleanroom
+Wants=network-online.target tailscaled.service docker.service
+After=network-online.target tailscaled.service docker.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+SupplementaryGroups=docker
+WorkingDirectory=/home/ubuntu/hermes-ovh-cleanroom
+Environment=HOME=/home/ubuntu
+Environment=GROK_HOME=/home/ubuntu/.grok
+Environment=PATH=/home/ubuntu/.grok/bin:/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ExecStart=/usr/local/libexec/hermes-grok-controller
+Restart=on-failure
+RestartSec=90s
+KillSignal=SIGINT
+KillMode=control-group
+TimeoutStopSec=120s
+UMask=0077
+StateDirectory=hermes-grok-controller
+LogsDirectory=hermes-grok-controller
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=hermes-grok-controller
+
+[Install]
+WantedBy=multi-user.target
