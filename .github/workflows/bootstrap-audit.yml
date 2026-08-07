@@ -1,0 +1,129 @@
+name: Trusted Bootstrap Auditor
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  statuses: write
+
+concurrency:
+  group: bootstrap-audit-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: trusted-bootstrap-audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout PR head without persisted credentials
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify immutable bootstrap authority and preservation floor
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          required=(
+            runbook/part-00.md
+            runbook/full-part-01.md
+            runbook/full-part-02.md
+            runbook/full-part-03.md
+            runbook/full-part-04.md
+            runbook/full-part-05.md
+            runbook/RUNBOOK-MANIFEST.md
+            policy/anti-hallucination-guardrails.md
+            runbook/part-99-post-completion-evolution-policy.md
+            .github/workflows/bootstrap-audit.yml
+          )
+
+          for path in "${required[@]}"; do
+            test -s "$path" || {
+              echo "Required authoritative file missing or empty: $path" >&2
+              exit 1
+            }
+          done
+
+          if git diff --quiet "$BASE_SHA" "$HEAD_SHA" -- .github/workflows/bootstrap-audit.yml; then
+            :
+          else
+            echo "The trusted bootstrap auditor cannot be modified by an implementation PR." >&2
+            exit 1
+          fi
+
+          grep -q 'PENDING_VERIFICATION' policy/anti-hallucination-guardrails.md
+          grep -qi 'evidence' policy/anti-hallucination-guardrails.md
+          grep -qi 'never remove\|non-removal\|additive' runbook/part-99-post-completion-evolution-policy.md
+          grep -q 'AUTONOMY_DONE.json' runbook/RUNBOOK-MANIFEST.md
+          grep -q 'AUDIT-GATE' runbook/RUNBOOK-MANIFEST.md
+
+          # Prevent removal/renaming of the authoritative bootstrap floor.
+          deleted="$(git diff --name-status "$BASE_SHA" "$HEAD_SHA" -- \
+            runbook/part-00.md \
+            runbook/full-part-01.md \
+            runbook/full-part-02.md \
+            runbook/full-part-03.md \
+            runbook/full-part-04.md \
+            runbook/full-part-05.md \
+            runbook/RUNBOOK-MANIFEST.md \
+            policy/anti-hallucination-guardrails.md \
+            runbook/part-99-post-completion-evolution-policy.md \
+            | awk '$1 ~ /^D|^R/ {print}')"
+
+          if [[ -n "$deleted" ]]; then
+            echo "Authoritative bootstrap material may not be deleted or renamed:" >&2
+            echo "$deleted" >&2
+            exit 1
+          fi
+
+          echo "Trusted bootstrap audit passed for $HEAD_SHA"
+
+  publish-status:
+    name: publish-bootstrap-gate
+    if: always()
+    needs: [audit]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Publish BOOTSTRAP-GATE status to exact PR head SHA
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          AUDIT_RESULT: ${{ needs.audit.result }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          if [[ "$AUDIT_RESULT" == "success" ]]; then
+            state=success
+            description='Trusted bootstrap audit exact-success green'
+          else
+            state=failure
+            description="Trusted bootstrap audit result: $AUDIT_RESULT"
+          fi
+
+          body="$(jq -nc \
+            --arg state "$state" \
+            --arg context 'BOOTSTRAP-GATE' \
+            --arg description "$description" \
+            '{state:$state,context:$context,description:$description}')"
+
+          curl --fail-with-body --silent --show-error \
+            -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "https://api.github.com/repos/$REPO/statuses/$HEAD_SHA" \
+            -d "$body"
+
+          [[ "$state" == success ]]
