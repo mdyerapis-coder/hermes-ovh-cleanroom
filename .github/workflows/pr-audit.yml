@@ -48,7 +48,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install test deps
-        run: pip install pytest pyyaml
+        run: pip install pytest==9.1.1 pyyaml==6.0.3
       - name: Unit tests
         run: python3 -m pytest -q tests/unit
 
@@ -100,7 +100,7 @@ jobs:
           grep -E '^[a-zA-Z0-9._-]+=.+' config/versions.lock
           # Application requirements files must be auditable when present
           if [[ -f requirements.txt ]]; then
-            pip install pip-audit
+            pip install pip-audit==2.10.1
             pip-audit -r requirements.txt
           fi
           if [[ -f go.mod ]]; then
@@ -121,7 +121,7 @@ jobs:
           python-version: "3.12"
       - name: Bandit SAST
         run: |
-          pip install bandit
+          pip install bandit==1.9.4
           bandit -r scripts hsp hps hes -x tests -ll
 
   iac-scan:
@@ -135,7 +135,7 @@ jobs:
           python-version: "3.12"
       - name: Checkov on compose and workflows
         run: |
-          pip install checkov
+          pip install checkov==3.3.10
           # Soft structure: scan compose; do not skip failures with continue-on-error
           checkov -f compose/compose.yaml --framework dockerfile,kubernetes,github_actions --compact --quiet \
             || checkov -f compose/compose.yaml --compact --quiet
@@ -194,7 +194,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install deps
-        run: pip install pytest pyyaml
+        run: pip install pytest==9.1.1 pyyaml==6.0.3
       - name: Integration tests
         run: python3 -m pytest -q tests/integration
 
@@ -237,7 +237,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install deps
-        run: pip install pytest pyyaml
+        run: pip install pytest==9.1.1 pyyaml==6.0.3
       - name: Smoke tests
         run: |
           python3 -m pytest -q tests/smoke tests/acceptance
